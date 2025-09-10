@@ -6,6 +6,7 @@
 [![Azure Provider](https://img.shields.io/badge/azurerm-4.23.0-blue)](https://registry.terraform.io/providers/hashicorp/azurerm/)
 [![Atmos](https://img.shields.io/badge/atmos-1.182.0-green)](https://atmos.tools/)
 [![Semantic Versioning](https://img.shields.io/badge/semver-enabled-brightgreen)](https://semver.org/)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/oneplatform-ecosystem/infrastructure-platform)
 
 One Platform is a comprehensive infrastructure-as-code solution designed to manage Azure deployments across multiple environments with consistency, reliability, and best practices using Atmos orchestration.
 
