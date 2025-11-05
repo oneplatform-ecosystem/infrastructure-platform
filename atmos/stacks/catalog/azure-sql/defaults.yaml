@@ -1,0 +1,40 @@
+components:
+  terraform:
+    azure-sql-database:
+      metadata:
+        component: azure-sql
+        type: real
+      vars:
+        enabled: true
+        delimiter: ""
+        regex_replace_chars: "/[^a-zA-Z0-9]/"
+        label_order:
+          - namespace
+          - name
+          - environment
+
+        # Server Configuration
+        sql_server_version: "12.0"
+        minimum_tls_version: "1.2"
+        public_network_access_enabled: false
+
+        # Database Configuration
+        sku_name: "GP_S_Gen5_2"
+        collation: "SQL_Latin1_General_CP1_CI_AS"
+        storage_account_type: "Geo"
+        zone_redundant: false
+        read_scale: false
+
+        # Firewall Rules - Allow Azure Services by default
+        firewall_rules:
+          allow-azure-services:
+            start_ip_address: "0.0.0.0"
+            end_ip_address: "0.0.0.0"
+
+        # Virtual Network Rules (empty by default)
+        virtual_network_rules: {}
+
+        # Short-term Backup Retention (7 days default)
+        short_term_retention_policy:
+          retention_days: 7
+          backup_interval_in_hours: 12

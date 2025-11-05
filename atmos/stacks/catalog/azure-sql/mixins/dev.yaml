@@ -1,0 +1,26 @@
+components:
+  terraform:
+    azure-sql-database:
+      vars:
+        stage: "dev"
+
+        # Development SKU - Serverless for cost optimization
+        sku_name: "GP_S_Gen5_2"
+        auto_pause_delay_in_minutes: 60
+        min_capacity: 0.5
+
+        # Lower retention for development
+        short_term_retention_policy:
+          retention_days: 7
+          backup_interval_in_hours: 12
+
+        # No zone redundancy in dev
+        zone_redundant: false
+
+        # Local storage is sufficient for dev
+        storage_account_type: "Local"
+
+        tags:
+          Environment: "Development"
+          CostCenter: "Engineering"
+          AutoShutdown: "true"

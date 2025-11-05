@@ -1,0 +1,37 @@
+components:
+  terraform:
+    azure-sql-database:
+      vars:
+        stage: "prod"
+
+        # Production SKU - Provisioned for consistent performance
+        sku_name: "GP_Gen5_4"
+
+        # Longer retention for production
+        short_term_retention_policy:
+          retention_days: 35
+          backup_interval_in_hours: 12
+
+        # Long-term retention for compliance
+        long_term_retention_policy:
+          weekly_retention: "P4W"
+          monthly_retention: "P12M"
+          yearly_retention: "P5Y"
+          week_of_year: 1
+
+        # Production resilience
+        zone_redundant: true
+        storage_account_type: "Geo"
+        read_scale: true
+
+        # Threat detection enabled
+        threat_detection_policy:
+          state: "Enabled"
+          email_account_admins: "Enabled"
+          retention_days: 90
+
+        tags:
+          Environment: "Production"
+          CostCenter: "Operations"
+          Criticality: "High"
+          Backup: "Required"
