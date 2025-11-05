@@ -18,6 +18,8 @@ import:
   - catalog/azure-app-service-plan/mixins/dev
   - catalog/azure-function-app/defaults
   - catalog/azure-function-app/mixins/dev
+  - catalog/azure-openai/defaults
+  - catalog/azure-openai/mixins/dev
 
 vars:
   environment: "eus"
@@ -491,6 +493,46 @@ components:
         app_settings:
           PYTHON_VERSION: "3.11"
           ENABLE_ORYX_BUILD: "true"
+
+    # =============================================================================
+    # AZURE OPENAI SERVICE EXAMPLES
+    # =============================================================================
+
+    # Example 1: Basic Azure OpenAI Service with GPT Models
+    azure-openai-dev:
+      metadata:
+        component: azure-openai
+      settings:
+        depends_on:
+          1:
+            component: "azure-resource-group"
+      vars:
+        name: "openai"
+        location: "eastus"
+        resource_group_name: !terraform.output azure-resource-group ".resource_group_name"
+
+        # Development configuration with public access for easier testing
+        public_network_access_enabled: true
+        network_acls:
+          default_action: "Allow"
+
+        # System Assigned Managed Identity for authentication
+        identity_type: "SystemAssigned"
+
+        # Deploy GPT-3.5 Turbo and embeddings for development
+        model_deployments:
+          gpt35turbo:
+            model_format: "OpenAI"
+            model_name: "gpt-35-turbo"
+            model_version: "0613"
+            scale_type: "Standard"
+            scale_capacity: 10
+          embeddings:
+            model_format: "OpenAI"
+            model_name: "text-embedding-ada-002"
+            model_version: "2"
+            scale_type: "Standard"
+            scale_capacity: 5
 
     # Example 2: Data Lake Gen2 Storage Account
     # azure-storage-account-datalake:

@@ -48,6 +48,7 @@ This repository provides a centralized platform for managing infrastructure depl
 | `azure-keyvault` | Azure Key Vault (keys, secrets, certificates) | Resource Groups |
 | `azure-app-service-plan` | Azure App Service Plans for hosting applications | Resource Groups |
 | `azure-function-app` | Azure Function Apps for serverless computing | Resource Groups, App Service Plans, Storage Accounts |
+| `azure-openai` | Azure OpenAI Service with model deployments | Resource Groups |
 
 ## 🏗️ Architecture
 
@@ -63,7 +64,8 @@ atmos/
 │   ├── azure-storage-account/        # Storage accounts (V2, ADLS Gen2)
 │   ├── azure-keyvault/               # Key Vault for secrets management
 │   ├── azure-app-service-plan/       # App Service Plans for hosting
-│   └── azure-function-app/           # Function Apps for serverless computing
+│   ├── azure-function-app/           # Function Apps for serverless computing
+│   └── azure-openai/                 # Azure OpenAI Service with AI model deployments
 ├── stacks/catalog/                   # Component defaults and mixins
 ├── stacks/orgs/                      # Organization defaults
 └── stacks/azure/                     # Environment-specific configurations
@@ -228,7 +230,10 @@ one-platform/
 │   │   ├── azure-nsg/
 │   │   ├── azure-private-endpoint/
 │   │   ├── azure-storage-account/
-│   │   └── azure-keyvault/
+│   │   ├── azure-keyvault/
+│   │   ├── azure-app-service-plan/
+│   │   ├── azure-function-app/
+│   │   └── azure-openai/
 │   └── stacks/
 │       ├── catalog/                  # Component defaults and mixins
 │       ├── orgs/                     # Organization defaults
@@ -273,9 +278,9 @@ Terraform state is managed using Azure Storage:
 
 - **Latest Release**: [![Latest Release](https://img.shields.io/github/v/release/oneplatform-ecosystem/infrastructure-platform)](https://github.com/oneplatform-ecosystem/infrastructure-platform/releases)
 - **Build Status**: All components validated ✅
-- **Coverage**: 9 Azure components available
+- **Coverage**: 10 Azure components available
 - **Environments**: Development environment fully deployed
-- **Infrastructure**: Core networking, storage, and security services operational
+- **Infrastructure**: Core networking, storage, security, and AI services operational
 
 ## 📚 Additional Resources
 
