@@ -1,0 +1,41 @@
+components:
+  terraform:
+    azure-app-gateway:
+      vars:
+        # Development environment uses smaller autoscale capacity
+        autoscale_configuration:
+          min_capacity: 1
+          max_capacity: 3
+
+        # Development may use HTTP for testing
+        http_listener:
+          - name: "dev-http-listener"
+            frontend_ip_configuration_name: "public-frontend"
+            frontend_port_name: "http"
+            protocol: "Http"
+
+        request_routing_rule:
+          - name: "dev-routing-rule"
+            rule_type: "Basic"
+            http_listener_name: "dev-http-listener"
+            backend_address_pool_name: "default-backend-pool"
+            backend_http_settings_name: "default-http-settings"
+            priority: 100
+
+        # Optional: Add development-specific health probe
+        probe:
+          - name: "dev-health-probe"
+            protocol: "Http"
+            path: "/health"
+            interval: 30
+            timeout: 30
+            unhealthy_threshold: 3
+            pick_host_name_from_backend_http_settings: true
+            match:
+              status_code: ["200-399"]
+
+        # No availability zones in dev to reduce costs
+        zones: null
+
+        # Relaxed SSL policy for development
+        ssl_policy: null

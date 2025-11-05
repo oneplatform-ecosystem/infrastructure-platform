@@ -18,6 +18,8 @@ import:
   - catalog/azure-app-service-plan/mixins/dev
   - catalog/azure-function-app/defaults
   - catalog/azure-function-app/mixins/dev
+  - catalog/azure-app-gateway/defaults
+  - catalog/azure-app-gateway/mixins/dev
 
 vars:
   environment: "eus"
