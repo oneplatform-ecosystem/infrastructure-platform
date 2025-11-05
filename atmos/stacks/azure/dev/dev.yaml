@@ -18,6 +18,8 @@ import:
   - catalog/azure-app-service-plan/mixins/dev
   - catalog/azure-function-app/defaults
   - catalog/azure-function-app/mixins/dev
+  - catalog/azure-acr/defaults
+  - catalog/azure-acr/mixins/dev
 
 vars:
   environment: "eus"
@@ -491,6 +493,64 @@ components:
         app_settings:
           PYTHON_VERSION: "3.11"
           ENABLE_ORYX_BUILD: "true"
+
+    # =============================================================================
+    # AZURE CONTAINER REGISTRY EXAMPLES
+    # =============================================================================
+
+    # Example 1: Development Container Registry (Standard SKU with Admin Access)
+    azure-acr-dev:
+      metadata:
+        component: azure-acr
+      settings:
+        depends_on:
+          1:
+            component: "azure-resource-group"
+      vars:
+        name: "containers"
+        attributes: ["dev"]
+        location: "eastus"
+        resource_group_name: !terraform.output azure-resource-group ".resource_group_name"
+        # Inherits dev settings: Standard SKU, admin enabled, public access
+
+    # Example 2: Container Registry with Private Endpoint (Commented - requires Premium SKU)
+    # azure-acr-private:
+    #   metadata:
+    #     component: azure-acr
+    #   settings:
+    #     depends_on:
+    #       1:
+    #         component: "azure-resource-group"
+    #   vars:
+    #     name: "private"
+    #     attributes: ["secure"]
+    #     location: "eastus"
+    #     resource_group_name: !terraform.output azure-resource-group ".resource_group_name"
+    #     sku: "Premium"
+    #     admin_enabled: false
+    #     public_network_access_enabled: false
+
+    # Private Endpoint for ACR (Commented - for Premium SKU only)
+    # azure-private-endpoint-acr:
+    #   metadata:
+    #     component: azure-private-endpoint
+    #   settings:
+    #     depends_on:
+    #       1:
+    #         component: "azure-resource-group"
+    #       2:
+    #         component: "azure-subnet"
+    #       3:
+    #         component: "azure-acr-private"
+    #   vars:
+    #     name: "acrprivate"
+    #     attributes: ["registry"]
+    #     location: "eastus"
+    #     resource_group_name: !terraform.output azure-resource-group ".resource_group_name"
+    #     subnet_id: !terraform.output azure-subnet ".subnet_id"
+    #     private_connection_resource_id: !terraform.output azure-acr-private ".container_registry_id"
+    #     subresource_names: ["registry"]
+    #     is_manual_connection: false
 
     # Example 2: Data Lake Gen2 Storage Account
     # azure-storage-account-datalake:
