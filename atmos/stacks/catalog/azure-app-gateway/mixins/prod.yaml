@@ -1,0 +1,79 @@
+components:
+  terraform:
+    azure-app-gateway:
+      vars:
+        # Production environment uses higher autoscale capacity
+        autoscale_configuration:
+          min_capacity: 3
+          max_capacity: 20
+
+        # Production must use HTTPS
+        http_listener:
+          - name: "prod-https-listener"
+            frontend_ip_configuration_name: "public-frontend"
+            frontend_port_name: "https"
+            protocol: "Https"
+            ssl_certificate_name: "prod-ssl-cert"
+            require_sni: true
+          # Optional: HTTP listener for redirect to HTTPS
+          - name: "prod-http-listener"
+            frontend_ip_configuration_name: "public-frontend"
+            frontend_port_name: "http"
+            protocol: "Http"
+
+        # Redirect HTTP to HTTPS
+        redirect_configuration:
+          - name: "http-to-https-redirect"
+            redirect_type: "Permanent"
+            target_listener_name: "prod-https-listener"
+            include_path: true
+            include_query_string: true
+
+        request_routing_rule:
+          - name: "prod-https-routing-rule"
+            rule_type: "Basic"
+            http_listener_name: "prod-https-listener"
+            backend_address_pool_name: "default-backend-pool"
+            backend_http_settings_name: "default-http-settings"
+            priority: 100
+          - name: "prod-http-redirect-rule"
+            rule_type: "Basic"
+            http_listener_name: "prod-http-listener"
+            redirect_configuration_name: "http-to-https-redirect"
+            priority: 200
+
+        # Strict health probe for production
+        probe:
+          - name: "prod-health-probe"
+            protocol: "Http"
+            path: "/health"
+            interval: 30
+            timeout: 30
+            unhealthy_threshold: 2  # Fail faster in production
+            pick_host_name_from_backend_http_settings: true
+            match:
+              status_code: ["200-299"]  # Stricter status codes
+
+        # Use all 3 availability zones in production for maximum availability
+        zones: ["1", "2", "3"]
+
+        # Strict SSL policy for production
+        ssl_policy:
+          policy_type: "Predefined"
+          policy_name: "AppGwSslPolicy20220101S"
+
+        # Add security headers via rewrite rule set
+        rewrite_rule_set:
+          - name: "security-headers"
+            rewrite_rule:
+              - name: "add-security-headers"
+                rule_sequence: 100
+                response_header_configuration:
+                  - header_name: "X-Frame-Options"
+                    header_value: "DENY"
+                  - header_name: "X-Content-Type-Options"
+                    header_value: "nosniff"
+                  - header_name: "Strict-Transport-Security"
+                    header_value: "max-age=31536000; includeSubDomains"
+                  - header_name: "X-XSS-Protection"
+                    header_value: "1; mode=block"

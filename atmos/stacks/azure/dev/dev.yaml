@@ -20,6 +20,8 @@ import:
   - catalog/azure-function-app/mixins/dev
   - catalog/azure-acr/defaults
   - catalog/azure-acr/mixins/dev
+  - catalog/azure-app-gateway/defaults
+  - catalog/azure-app-gateway/mixins/dev
   - catalog/azure-openai/defaults
   - catalog/azure-openai/mixins/dev
 

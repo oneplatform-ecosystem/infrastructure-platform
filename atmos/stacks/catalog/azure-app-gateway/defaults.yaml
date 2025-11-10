@@ -1,0 +1,101 @@
+components:
+  terraform:
+    azure-app-gateway:
+      metadata:
+        component: azure-app-gateway
+        type: abstract
+      vars:
+        enabled: true
+        delimiter: ""
+        regex_replace_chars: "/[^a-zA-Z0-9]/"
+        label_order:
+          - namespace
+          - name
+          - environment
+
+        # Default SKU configuration for Standard_v2
+        sku:
+          name: "Standard_v2"
+          tier: "Standard_v2"
+          capacity: null # Use autoscale_configuration instead
+
+        # Default autoscale configuration
+        autoscale_configuration:
+          min_capacity: 2
+          max_capacity: 10
+
+        # Default frontend ports
+        frontend_port:
+          - name: "http"
+            port: 80
+          - name: "https"
+            port: 443
+
+        # Default backend address pool
+        backend_address_pool:
+          - name: "default-backend-pool"
+            fqdns: []
+            ip_addresses: []
+
+        # Default backend HTTP settings
+        backend_http_settings:
+          - name: "default-http-settings"
+            cookie_based_affinity: "Disabled"
+            port: 80
+            protocol: "Http"
+            request_timeout: 30
+
+        # Default HTTP listener
+        http_listener:
+          - name: "default-http-listener"
+            frontend_ip_configuration_name: "public-frontend"
+            frontend_port_name: "http"
+            protocol: "Http"
+
+        # Default request routing rule
+        request_routing_rule:
+          - name: "default-routing-rule"
+            rule_type: "Basic"
+            http_listener_name: "default-http-listener"
+            backend_address_pool_name: "default-backend-pool"
+            backend_http_settings_name: "default-http-settings"
+            priority: 100
+
+        # Default health probe (empty, can be added per environment)
+        probe: []
+
+        # SSL configuration (empty by default)
+        ssl_certificate: []
+        trusted_root_certificate: []
+        ssl_policy: null
+
+        # URL path maps (empty by default)
+        url_path_map: []
+
+        # Redirect configuration (empty by default)
+        redirect_configuration: []
+
+        # Rewrite rule sets (empty by default)
+        rewrite_rule_set: []
+
+        # WAF configuration (disabled by default)
+        waf_configuration: null
+
+        # Firewall policy (none by default)
+        firewall_policy_id: null
+
+        # Availability zones (none by default)
+        zones: null
+
+        # Enable HTTP2
+        enable_http2: true
+
+        # Force firewall policy association
+        force_firewall_policy_association: false
+
+        # Identity configuration (none by default)
+        identity: null
+
+        # Private IP configuration (none by default)
+        private_ip_address: null
+        private_ip_address_allocation: "Dynamic"

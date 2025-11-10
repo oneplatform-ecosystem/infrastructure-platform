@@ -1,0 +1,33 @@
+components:
+  terraform:
+    azure-app-gateway:
+      vars:
+        # Use WAF_v2 SKU for Web Application Firewall
+        sku:
+          name: "WAF_v2"
+          tier: "WAF_v2"
+          capacity: null
+
+        # WAF Configuration
+        waf_configuration:
+          enabled: true
+          firewall_mode: "Prevention"  # Detection or Prevention
+          rule_set_type: "OWASP"
+          rule_set_version: "3.2"      # Latest OWASP rule set
+          file_upload_limit_mb: 100
+          request_body_check: true
+          max_request_body_size_kb: 128
+
+          # Optionally disable specific rule groups or rules that cause false positives
+          # disabled_rule_group:
+          #   - rule_group_name: "REQUEST-920-PROTOCOL-ENFORCEMENT"
+          #     rules: [920300, 920330]
+
+          # Optionally add exclusions for specific patterns
+          # exclusion:
+          #   - match_variable: "RequestHeaderNames"
+          #     selector_match_operator: "Equals"
+          #     selector: "User-Agent"
+
+        # Note: For production, consider using a separate WAF Policy (firewall_policy_id)
+        # instead of waf_configuration for more advanced features
