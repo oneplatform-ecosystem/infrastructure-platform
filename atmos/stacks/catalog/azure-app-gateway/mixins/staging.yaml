@@ -1,0 +1,45 @@
+components:
+  terraform:
+    azure-app-gateway:
+      vars:
+        # Staging environment uses moderate autoscale capacity
+        autoscale_configuration:
+          min_capacity: 2
+          max_capacity: 6
+
+        # Staging should use HTTPS like production
+        http_listener:
+          - name: "staging-https-listener"
+            frontend_ip_configuration_name: "public-frontend"
+            frontend_port_name: "https"
+            protocol: "Https"
+            ssl_certificate_name: "staging-ssl-cert"
+            require_sni: true
+
+        request_routing_rule:
+          - name: "staging-routing-rule"
+            rule_type: "Basic"
+            http_listener_name: "staging-https-listener"
+            backend_address_pool_name: "default-backend-pool"
+            backend_http_settings_name: "default-http-settings"
+            priority: 100
+
+        # Health probe for staging
+        probe:
+          - name: "staging-health-probe"
+            protocol: "Http"
+            path: "/health"
+            interval: 30
+            timeout: 30
+            unhealthy_threshold: 3
+            pick_host_name_from_backend_http_settings: true
+            match:
+              status_code: ["200-399"]
+
+        # Use 2 availability zones in staging for better availability testing
+        zones: ["1", "2"]
+
+        # Use modern SSL policy
+        ssl_policy:
+          policy_type: "Predefined"
+          policy_name: "AppGwSslPolicy20220101S"

@@ -1,0 +1,60 @@
+components:
+  terraform:
+    azure-acr:
+      metadata:
+        component: azure-acr
+        type: service
+
+      settings:
+        # Spacelift settings can be added here if needed
+        spacelift:
+          workspace_enabled: true
+
+      vars:
+        # Enable/disable the component
+        enabled: true
+
+        # Naming configuration
+        # name will be set in stack configuration
+        # attributes can be set per instance (e.g., ["prod"], ["dev"])
+        delimiter: ""
+
+        # Basic ACR Configuration
+        sku: "Standard"
+        admin_enabled: false
+        add_random_suffix: true
+
+        # Network Configuration
+        public_network_access_enabled: true
+        network_rule_bypass_option: "AzureServices"
+
+        # Feature Flags
+        quarantine_policy_enabled: false
+        zone_redundancy_enabled: false
+        export_policy_enabled: true
+        anonymous_pull_enabled: false
+        data_endpoint_enabled: false
+
+        # Identity Configuration (optional)
+        identity_type: null
+        identity_ids: []
+
+        # Advanced Features (Premium SKU only)
+        # These will be ignored for Basic/Standard SKUs
+        encryption: null
+        georeplications: []
+        network_rule_set: null
+        retention_policy: null
+        trust_policy: null
+
+        # Access Control
+        scope_maps: {}
+        tokens: {}
+
+        # Webhooks
+        webhooks: {}
+
+        # Tags (will be merged with label module tags)
+        tags:
+          ManagedBy: "Terraform"
+          Component: "azure-acr"
