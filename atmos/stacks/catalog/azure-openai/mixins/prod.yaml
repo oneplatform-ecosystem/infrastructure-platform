@@ -1,0 +1,44 @@
+components:
+  terraform:
+    azure-openai:
+      vars:
+        # Production environment overrides
+
+        # Enhanced security for production
+        public_network_access_enabled: false
+
+        # Strict network access - only from approved networks
+        network_acls:
+          default_action: "Deny"
+          ip_rules: []
+          # subnet_id should be configured per specific production deployment
+
+        # Enable System Assigned Managed Identity for secure authentication
+        identity_type: "SystemAssigned"
+
+        # Production model deployments - higher capacity for production workloads
+        model_deployments:
+          gpt4:
+            model_format: "OpenAI"
+            model_name: "gpt-4"
+            model_version: "0613"
+            scale_type: "Standard"
+            scale_capacity: 30
+          gpt35turbo:
+            model_format: "OpenAI"
+            model_name: "gpt-35-turbo"
+            model_version: "0613"
+            scale_type: "Standard"
+            scale_capacity: 50
+          embeddings:
+            model_format: "OpenAI"
+            model_name: "text-embedding-ada-002"
+            model_version: "2"
+            scale_type: "Standard"
+            scale_capacity: 20
+
+        # Production tags
+        tags:
+          Environment: "production"
+          CriticalityLevel: "high"
+          DataClassification: "confidential"
