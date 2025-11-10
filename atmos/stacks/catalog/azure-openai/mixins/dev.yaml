@@ -1,0 +1,31 @@
+components:
+  terraform:
+    azure-openai:
+      vars:
+        # Development environment overrides
+
+        # Relaxed security for development - Allow public access for easier development
+        public_network_access_enabled: true
+
+        # Less restrictive network ACLs for development
+        network_acls:
+          default_action: "Allow"
+          ip_rules: []
+
+        # Enable System Assigned Managed Identity for testing
+        identity_type: "SystemAssigned"
+
+        # Development model deployments - smaller capacity for cost optimization
+        model_deployments:
+          gpt35turbo:
+            model_format: "OpenAI"
+            model_name: "gpt-35-turbo"
+            model_version: "0613"
+            scale_type: "Standard"
+            scale_capacity: 10
+          embeddings:
+            model_format: "OpenAI"
+            model_name: "text-embedding-ada-002"
+            model_version: "2"
+            scale_type: "Standard"
+            scale_capacity: 5
