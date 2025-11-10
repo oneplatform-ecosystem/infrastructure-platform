@@ -1,0 +1,23 @@
+# stacks/catalog/azure-redis/mixins/dev.yaml
+
+components:
+  terraform:
+    azure-redis:
+      vars:
+        # Development environment settings - Basic tier for cost savings
+        sku_name: "Basic"
+        family: "C"
+        capacity: 0  # Smallest size for dev
+
+        # Redis Configuration
+        redis_configuration:
+          enable_authentication: true
+          maxmemory_policy: "allkeys-lru"
+
+        # Network access - can be more permissive for dev
+        public_network_access_enabled: false
+        enable_non_ssl_port: false
+        minimum_tls_version: "1.2"
+
+        # Private endpoints for secure development
+        create_private_endpoint: true

@@ -1,0 +1,46 @@
+# stacks/catalog/azure-redis/mixins/prod.yaml
+
+components:
+  terraform:
+    azure-redis:
+      vars:
+        # Production environment settings - Premium tier with HA
+        sku_name: "Premium"
+        family: "P"
+        capacity: 1
+
+        # High Availability
+        zones:
+          - "1"
+          - "2"
+          - "3"
+        replicas_per_primary: 2
+
+        # Redis Configuration
+        redis_configuration:
+          enable_authentication: true
+          maxmemory_policy: "allkeys-lru"
+          maxmemory_reserved: 615
+          maxmemory_delta: 615
+          maxfragmentationmemory_reserved: 615
+          # RDB Backup enabled (requires storage account connection string)
+          rdb_backup_enabled: false  # Enable and configure when storage is available
+          # rdb_backup_frequency: 60
+          # rdb_backup_max_snapshot_count: 1
+
+        # Security settings - Strict for production
+        public_network_access_enabled: false
+        enable_non_ssl_port: false
+        minimum_tls_version: "1.2"
+
+        # Private endpoints mandatory for production
+        create_private_endpoint: true
+
+        # Managed Identity for enhanced security
+        identity_type: "SystemAssigned"
+
+        # Patch schedule during off-peak hours
+        patch_schedules:
+          - day_of_week: "Sunday"
+            start_hour_utc: 3
+            maintenance_window: "PT5H"

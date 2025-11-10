@@ -1,0 +1,31 @@
+# stacks/catalog/azure-redis/mixins/staging.yaml
+
+components:
+  terraform:
+    azure-redis:
+      vars:
+        # Staging environment settings - Standard tier with replication
+        sku_name: "Standard"
+        family: "C"
+        capacity: 1
+
+        # Redis Configuration
+        redis_configuration:
+          enable_authentication: true
+          maxmemory_policy: "allkeys-lru"
+          maxmemory_reserved: 125
+          maxmemory_delta: 125
+
+        # Security settings
+        public_network_access_enabled: false
+        enable_non_ssl_port: false
+        minimum_tls_version: "1.2"
+
+        # Private endpoints for secure access
+        create_private_endpoint: true
+
+        # Patch schedule during off-peak hours
+        patch_schedules:
+          - day_of_week: "Sunday"
+            start_hour_utc: 2
+            maintenance_window: "PT5H"
