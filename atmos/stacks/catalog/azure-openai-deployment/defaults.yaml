@@ -1,0 +1,30 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# AZURE OPENAI MODEL DEPLOYMENTS - DEFAULT CONFIGURATION
+# This file defines the default configuration for Azure OpenAI model deployments
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+components:
+  terraform:
+    azure-openai-deployment:
+      metadata:
+        component: azure-openai-deployment
+
+      vars:
+        # Module control
+        enabled: true
+
+        # Deployments configuration (empty by default - to be defined in mixins or stacks)
+        deployments: {}
+
+        # Label configuration
+        delimiter: ""
+        label_order:
+          - environment
+          - stage
+          - name
+          - namespace
+
+        # Tags
+        tags:
+          Component: "azure-openai-deployment"
+          ManagedBy: "terraform"
