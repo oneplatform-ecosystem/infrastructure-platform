@@ -1,0 +1,36 @@
+# stacks/catalog/azure-redis/defaults.yaml
+
+components:
+  terraform:
+    azure-redis:
+      metadata:
+        component: azure-redis
+      vars:
+        enabled: true
+        delimiter: ""
+        regex_replace_chars: "/[^a-zA-Z0-9]/"
+        label_order:
+          - namespace
+          - environment
+          - stage
+          - name
+
+        # Default Redis Cache Configuration
+        sku_name: "Standard"
+        family: "C"
+        capacity: 1
+        redis_version: "6"
+
+        # Security Settings
+        enable_non_ssl_port: false
+        minimum_tls_version: "1.2"
+        public_network_access_enabled: false
+
+        # Redis Configuration Defaults
+        redis_configuration:
+          enable_authentication: true
+          maxmemory_policy: "allkeys-lru"
+
+        # Private endpoint disabled by default
+        create_private_endpoint: false
+        private_endpoint_manual_connection: false
