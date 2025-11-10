@@ -1,0 +1,49 @@
+components:
+  terraform:
+    azure-acr:
+      vars:
+        # Development-friendly SKU (Basic or Standard for cost savings)
+        sku: "Standard"
+
+        # Enable admin access for easier testing and CI/CD integration
+        # Note: Should be disabled in production
+        admin_enabled: true
+
+        # Allow public network access for easier development
+        public_network_access_enabled: true
+
+        # Development features
+        quarantine_policy_enabled: false
+        zone_redundancy_enabled: false
+        export_policy_enabled: true
+        anonymous_pull_enabled: false
+
+        # No geo-replication in dev (cost savings)
+        georeplications: []
+
+        # No network restrictions in dev environment
+        network_rule_set: null
+
+        # Optional: Shorter retention period for dev
+        # Uncomment if using Premium SKU in dev
+        # retention_policy:
+        #   days: 7
+        #   enabled: true
+
+        # No trust policy in dev
+        trust_policy: null
+
+        # Optional: Development webhooks for CI/CD
+        # webhooks:
+        #   dev-build-webhook:
+        #     service_uri: "https://dev-pipeline.company.com/webhook"
+        #     status: "enabled"
+        #     scope: "*:*"
+        #     actions: ["push", "delete"]
+        #     custom_headers: {}
+
+        # Development tags
+        tags:
+          Environment: "Development"
+          CostCenter: "Engineering"
+          AutoShutdown: "true"

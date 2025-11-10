@@ -1,0 +1,98 @@
+components:
+  terraform:
+    azure-acr:
+      vars:
+        # Production requires Premium SKU for advanced features
+        sku: "Premium"
+
+        # Disable admin user in production - use Azure AD authentication
+        admin_enabled: false
+
+        # Restrict public network access in production
+        # Should be false if using private endpoints
+        public_network_access_enabled: false
+
+        # Production security features
+        quarantine_policy_enabled: true
+        zone_redundancy_enabled: true
+        export_policy_enabled: false
+        anonymous_pull_enabled: false
+        data_endpoint_enabled: true
+
+        # Use managed identity for encryption
+        identity_type: "SystemAssigned"
+
+        # Example: Geo-replication for high availability
+        # Adjust locations based on your deployment regions
+        georeplications:
+          - location: "westus2"
+            zone_redundancy_enabled: true
+            regional_endpoint_enabled: true
+            tags: {}
+          # Uncomment additional regions as needed
+          # - location: "westeurope"
+          #   zone_redundancy_enabled: true
+          #   regional_endpoint_enabled: true
+          #   tags: {}
+
+        # Network restrictions for production
+        # Requires Premium SKU
+        network_rule_set:
+          default_action: "Deny"
+          ip_rules: []
+            # Example: Allow specific IP ranges
+            # - action: "Allow"
+            #   ip_range: "203.0.113.0/24"
+          virtual_network_subnet_ids: []
+            # Will be set in stack configuration to reference subnet outputs
+            # - !terraform.output azure-subnet ".subnet_id"
+
+        # Retention policy for automatic cleanup
+        retention_policy:
+          days: 90
+          enabled: true
+
+        # Enable content trust for signed images
+        trust_policy:
+          enabled: true
+
+        # Example: Production tokens for service accounts
+        # scope_maps:
+        #   app-readonly:
+        #     actions:
+        #       - "repositories/*/content/read"
+        #       - "repositories/*/metadata/read"
+        #   app-readwrite:
+        #     actions:
+        #       - "repositories/app/content/read"
+        #       - "repositories/app/content/write"
+        #       - "repositories/app/metadata/read"
+        #
+        # tokens:
+        #   app-prod-token:
+        #     scope_map_name: "app-readwrite"
+        #     enabled: true
+
+        # Example: Production webhooks
+        # webhooks:
+        #   security-scan:
+        #     service_uri: "https://security-scan.company.com/webhook"
+        #     status: "enabled"
+        #     scope: "*:*"
+        #     actions: ["push"]
+        #     custom_headers:
+        #       X-API-Key: "your-api-key"
+        #   deployment-trigger:
+        #     service_uri: "https://prod-pipeline.company.com/webhook"
+        #     status: "enabled"
+        #     scope: "production/*"
+        #     actions: ["push"]
+        #     custom_headers: {}
+
+        # Production tags
+        tags:
+          Environment: "Production"
+          CostCenter: "Operations"
+          Criticality: "High"
+          DataClassification: "Internal"
+          Backup: "Required"
