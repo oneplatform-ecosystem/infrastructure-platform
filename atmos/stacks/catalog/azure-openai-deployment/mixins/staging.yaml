@@ -1,0 +1,43 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# AZURE OPENAI MODEL DEPLOYMENTS - STAGING ENVIRONMENT CONFIGURATION
+# This file defines the staging-specific configuration for Azure OpenAI model deployments
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+components:
+  terraform:
+    azure-openai-deployment:
+      vars:
+        # Staging deployments with moderate capacity for testing at scale
+        deployments:
+          gpt4:
+            model_format: "OpenAI"
+            model_name: "gpt-4"
+            model_version: "0613"
+            scale_type: "Standard"
+            scale_capacity: 15
+            version_upgrade_option: "OnceNewDefaultVersionAvailable"
+            dynamic_throttling_enabled: false
+
+          gpt35turbo:
+            model_format: "OpenAI"
+            model_name: "gpt-35-turbo"
+            model_version: "0613"
+            scale_type: "Standard"
+            scale_capacity: 25
+            version_upgrade_option: "OnceNewDefaultVersionAvailable"
+            dynamic_throttling_enabled: false
+
+          embeddings:
+            model_format: "OpenAI"
+            model_name: "text-embedding-ada-002"
+            model_version: "2"
+            scale_type: "Standard"
+            scale_capacity: 10
+            version_upgrade_option: "OnceNewDefaultVersionAvailable"
+            dynamic_throttling_enabled: false
+
+        # Staging-specific tags
+        tags:
+          Environment: "staging"
+          CostCenter: "engineering"
+          Purpose: "pre-production-testing"

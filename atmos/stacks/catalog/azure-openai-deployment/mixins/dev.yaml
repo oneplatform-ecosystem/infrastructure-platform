@@ -1,0 +1,34 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# AZURE OPENAI MODEL DEPLOYMENTS - DEVELOPMENT ENVIRONMENT CONFIGURATION
+# This file defines the development-specific configuration for Azure OpenAI model deployments
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+components:
+  terraform:
+    azure-openai-deployment:
+      vars:
+        # Development deployments with lower capacity for cost optimization
+        deployments:
+          gpt35turbo:
+            model_format: "OpenAI"
+            model_name: "gpt-35-turbo"
+            model_version: "0613"
+            scale_type: "Standard"
+            scale_capacity: 10
+            version_upgrade_option: "OnceNewDefaultVersionAvailable"
+            dynamic_throttling_enabled: false
+
+          embeddings:
+            model_format: "OpenAI"
+            model_name: "text-embedding-ada-002"
+            model_version: "2"
+            scale_type: "Standard"
+            scale_capacity: 5
+            version_upgrade_option: "OnceNewDefaultVersionAvailable"
+            dynamic_throttling_enabled: false
+
+        # Development-specific tags
+        tags:
+          Environment: "development"
+          CostCenter: "engineering"
+          AutoShutdown: "true"

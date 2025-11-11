@@ -1,0 +1,45 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# AZURE OPENAI MODEL DEPLOYMENTS - PRODUCTION ENVIRONMENT CONFIGURATION
+# This file defines the production-specific configuration for Azure OpenAI model deployments
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+components:
+  terraform:
+    azure-openai-deployment:
+      vars:
+        # Production deployments with higher capacity for performance
+        deployments:
+          gpt4:
+            model_format: "OpenAI"
+            model_name: "gpt-4"
+            model_version: "0613"
+            scale_type: "Standard"
+            scale_capacity: 30
+            version_upgrade_option: "OnceCurrentVersionExpired"
+            dynamic_throttling_enabled: true
+
+          gpt35turbo:
+            model_format: "OpenAI"
+            model_name: "gpt-35-turbo"
+            model_version: "0613"
+            scale_type: "Standard"
+            scale_capacity: 50
+            version_upgrade_option: "OnceCurrentVersionExpired"
+            dynamic_throttling_enabled: true
+
+          embeddings:
+            model_format: "OpenAI"
+            model_name: "text-embedding-ada-002"
+            model_version: "2"
+            scale_type: "Standard"
+            scale_capacity: 20
+            version_upgrade_option: "OnceCurrentVersionExpired"
+            dynamic_throttling_enabled: false
+
+        # Production-specific tags
+        tags:
+          Environment: "production"
+          CostCenter: "production-services"
+          Criticality: "high"
+          SLA: "99.9"
+          BackupRequired: "true"
