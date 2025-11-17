@@ -1,0 +1,87 @@
+# stacks/catalog/azure-vm/defaults.yaml
+
+components:
+  terraform:
+    azure-vm:
+      metadata:
+        component: azure-vm
+      vars:
+        enabled: true
+        delimiter: ""
+        regex_replace_chars: "/[^a-zA-Z0-9]/"
+        label_order:
+          - namespace
+          - environment
+          - stage
+          - name
+
+        # Default VM Configuration
+        os_type: "Linux"
+        vm_size: "Standard_D2s_v3"
+
+        # Authentication - Linux defaults
+        admin_username: "azureadmin"
+        disable_password_authentication: true
+        admin_ssh_keys: []  # Must be provided per environment
+
+        # Default Source Image - Ubuntu 22.04 LTS
+        source_image_reference:
+          publisher: "Canonical"
+          offer: "0001-com-ubuntu-server-jammy"
+          sku: "22_04-lts-gen2"
+          version: "latest"
+
+        # OS Disk Configuration
+        os_disk_caching: "ReadWrite"
+        os_disk_storage_account_type: "Premium_LRS"
+        os_disk_size_gb: null  # Use image default
+
+        # Network Configuration
+        private_ip_address_allocation: "Dynamic"
+        enable_accelerated_networking: false
+        enable_ip_forwarding: false
+
+        # Public IP - disabled by default for security
+        create_public_ip: false
+        public_ip_allocation_method: "Static"
+        public_ip_sku: "Standard"
+
+        # Data Disks - none by default
+        data_disks: {}
+
+        # Security Configuration
+        encryption_at_host_enabled: false
+        secure_boot_enabled: false
+        vtpm_enabled: false
+
+        # Patching Configuration
+        linux_patch_mode: "ImageDefault"
+        windows_patch_mode: "AutomaticByOS"
+        patch_assessment_mode: "ImageDefault"
+        provision_vm_agent: true
+        allow_extension_operations: true
+
+        # Windows-specific
+        enable_automatic_updates: true
+        timezone: null
+
+        # Availability - single instance by default
+        availability_set_id: null
+        zone: null
+        zones: null
+
+        # Boot Diagnostics - disabled by default
+        boot_diagnostics_storage_account_uri: null
+
+        # Managed Identity - none by default
+        identity_type: null
+        identity_ids: null
+
+        # Plan - for marketplace images
+        plan: null
+
+        # License Type
+        license_type: null
+
+        # Custom Data
+        custom_data: null
