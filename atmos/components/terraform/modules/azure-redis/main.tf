@@ -42,8 +42,8 @@ resource "azurerm_redis_cache" "this" {
   minimum_tls_version           = var.minimum_tls_version
   public_network_access_enabled = var.public_network_access_enabled
 
-  # Note: In v4.x, enable_authentication moved from redis_configuration to resource level as authentication_enabled
-  authentication_enabled = var.redis_configuration != null ? var.redis_configuration.enable_authentication : true
+  # Note: In v4.x, enable_authentication has been removed from redis_configuration
+  # Authentication is now always enabled for security reasons and cannot be disabled
 
   # Redis Configuration Options
   dynamic "redis_configuration" {

@@ -87,9 +87,9 @@ variable "public_network_access_enabled" {
 variable "redis_configuration" {
   description = <<-EOT
     Redis configuration options.
-    Note: In AzureRM provider v4.x, enable_authentication has moved from redis_configuration
-    to the main resource level as authentication_enabled. This field is still accepted for
-    backward compatibility but will be applied at the resource level.
+    Note: In AzureRM provider v4.x, enable_authentication has been deprecated and removed.
+    Authentication is now always enabled for security reasons and cannot be disabled.
+    The enable_authentication field is still accepted for backward compatibility but is ignored.
   EOT
   type = object({
     enable_authentication           = optional(bool, true)
