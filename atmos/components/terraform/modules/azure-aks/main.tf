@@ -40,7 +40,7 @@ resource "random_string" "suffix" {
 locals {
   aks_name = var.enabled ? (
     var.add_random_suffix ?
-    "${module.label.id}${random_string.suffix[0].result}" :
+    "${module.label.id}${try(random_string.suffix[0].result, "")}" :
     coalesce(var.cluster_name, module.label.id)
   ) : ""
 }
