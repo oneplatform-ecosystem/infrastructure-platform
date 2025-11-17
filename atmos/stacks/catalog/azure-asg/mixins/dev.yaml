@@ -1,0 +1,7 @@
+components:
+  terraform:
+    azure-asg:
+      vars:
+        tags:
+          Environment: "Development"
+          CostCenter: "Engineering"

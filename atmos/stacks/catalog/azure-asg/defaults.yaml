@@ -1,0 +1,22 @@
+components:
+  terraform:
+    azure-asg:
+      metadata:
+        component: azure-asg
+        type: service
+
+      settings:
+        spacelift:
+          workspace_enabled: true
+
+      vars:
+        enabled: true
+
+        # Naming
+        name: "asg"
+        delimiter: ""
+        regex_replace_chars: "/[^a-zA-Z0-9]/"
+
+        tags:
+          ManagedBy: "Terraform"
+          Component: "azure-asg"
