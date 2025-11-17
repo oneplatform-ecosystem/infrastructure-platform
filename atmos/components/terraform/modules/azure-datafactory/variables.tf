@@ -1,0 +1,176 @@
+variable "enabled" {
+  description = "Set to false to prevent the module from creating any resources"
+  type        = bool
+  default     = true
+}
+
+variable "location" {
+  description = "The Azure Region where the Data Factory should exist"
+  type        = string
+}
+
+variable "resource_group_name" {
+  description = "The name of the Resource Group in which the Data Factory should exist"
+  type        = string
+}
+
+# Azure Data Factory Configuration
+variable "datafactory_name" {
+  description = "The name of the Data Factory. If not provided, the name will be generated using the label module"
+  type        = string
+  default     = null
+}
+
+variable "public_network_enabled" {
+  description = "Is the Data Factory visible to the public network? Defaults to true"
+  type        = bool
+  default     = true
+}
+
+variable "managed_virtual_network_enabled" {
+  description = "Is Managed Virtual Network enabled for the Data Factory?"
+  type        = bool
+  default     = false
+}
+
+variable "customer_managed_key_id" {
+  description = "The ID of the Key Vault Key to use for customer managed key encryption"
+  type        = string
+  default     = null
+}
+
+# Managed Identity
+variable "identity_type" {
+  description = "The type of Managed Identity which should be assigned to the Data Factory. Possible values are SystemAssigned, UserAssigned and SystemAssigned, UserAssigned"
+  type        = string
+  default     = "SystemAssigned"
+  validation {
+    condition     = var.identity_type == null || contains(["SystemAssigned", "UserAssigned", "SystemAssigned, UserAssigned"], var.identity_type)
+    error_message = "The identity_type must be either SystemAssigned, UserAssigned, or SystemAssigned, UserAssigned."
+  }
+}
+
+variable "identity_ids" {
+  description = "A list of User Assigned Managed Identity IDs to be assigned to this Data Factory. Required when identity_type is UserAssigned or SystemAssigned, UserAssigned"
+  type        = list(string)
+  default     = null
+}
+
+# GitHub Configuration
+variable "github_configuration" {
+  description = "GitHub configuration for the Data Factory"
+  type = object({
+    account_name       = string
+    branch_name        = string
+    repository_name    = string
+    root_folder        = string
+    git_url            = optional(string)
+    publishing_enabled = optional(bool, true)
+  })
+  default = null
+}
+
+# Azure DevOps (VSTS) Configuration
+variable "vsts_configuration" {
+  description = "Azure DevOps (VSTS) configuration for the Data Factory"
+  type = object({
+    account_name       = string
+    branch_name        = string
+    project_name       = string
+    repository_name    = string
+    root_folder        = string
+    tenant_id          = string
+    publishing_enabled = optional(bool, true)
+  })
+  default = null
+}
+
+# Global Parameters
+variable "global_parameters" {
+  description = "A list of global parameters for the Data Factory"
+  type = list(object({
+    name  = string
+    type  = string
+    value = string
+  }))
+  default = null
+}
+
+# Label module variables
+variable "namespace" {
+  description = "ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique"
+  type        = string
+  default     = null
+}
+
+variable "tenant" {
+  description = "ID element _(Rarely used, not included by default)_. A customer identifier, indicating who this instance of a resource is for"
+  type        = string
+  default     = null
+}
+
+variable "environment" {
+  description = "ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT'"
+  type        = string
+  default     = null
+}
+
+variable "stage" {
+  description = "ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release'"
+  type        = string
+  default     = null
+}
+
+variable "name" {
+  description = "ID element. Usually the component or solution name, e.g. 'app' or 'jenkins'"
+  type        = string
+  default     = null
+}
+
+variable "attributes" {
+  description = "ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id` in the order they appear in the list"
+  type        = list(string)
+  default     = []
+}
+
+variable "delimiter" {
+  description = "Delimiter to be used between ID elements"
+  type        = string
+  default     = "-"
+}
+
+variable "tags" {
+  description = "Additional tags (e.g. `{'BusinessUnit': 'XYZ'}`)"
+  type        = map(string)
+  default     = {}
+}
+
+variable "regex_replace_chars" {
+  description = "Terraform regular expression (regex) string. Characters matching the regex will be removed from the ID elements"
+  type        = string
+  default     = null
+}
+
+variable "label_order" {
+  description = "The order in which the labels (ID elements) appear in the id"
+  type        = list(string)
+  default     = null
+}
+
+variable "label_key_case" {
+  description = "Controls the letter case of the tags keys (label names) for tags generated by this module"
+  type        = string
+  default     = null
+}
+
+variable "label_value_case" {
+  description = "Controls the letter case of the tags values for tags generated by this module"
+  type        = string
+  default     = null
+}
+
+variable "id_length_limit" {
+  description = "Limit `id` to this many characters (minimum 6)"
+  type        = number
+  default     = null
+}
