@@ -1,0 +1,19 @@
+components:
+  terraform:
+    azure-document-intelligence:
+      vars:
+        # Staging uses Standard tier
+        sku_name: "S0"
+
+        # Staging has stricter security than dev
+        public_network_access_enabled: false
+
+        # Network ACLs configured but may allow more IPs than prod
+        network_acls:
+          default_action: "Deny"
+          ip_rules: []
+          subnet_id: null
+          ignore_missing_vnet_service_endpoint: false
+
+        # Enable System Assigned Managed Identity for staging
+        identity_type: "SystemAssigned"
