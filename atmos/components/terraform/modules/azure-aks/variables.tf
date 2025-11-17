@@ -204,11 +204,10 @@ variable "private_cluster_public_fqdn_enabled" {
 }
 
 variable "api_server_access_profile" {
-  description = "API Server Access Profile configuration"
+  description = "API Server Access Profile configuration. Note: In v4.x, vnet_integration_enabled is deprecated - VNet integration is automatic when subnet_id is provided"
   type = object({
-    authorized_ip_ranges     = list(string)
-    subnet_id                = string
-    vnet_integration_enabled = bool
+    authorized_ip_ranges = list(string)
+    subnet_id            = string
   })
   default = null
 }
@@ -218,7 +217,7 @@ variable "api_server_access_profile" {
 ####################
 
 variable "default_node_pool" {
-  description = "Default node pool configuration"
+  description = "Default node pool configuration. Note: In v4.x, node_taints is not supported in default_node_pool - only in additional node pools"
   type = object({
     name                         = string
     vm_size                      = string
@@ -229,7 +228,6 @@ variable "default_node_pool" {
     enable_node_public_ip        = bool
     max_pods                     = number
     node_labels                  = map(string)
-    node_taints                  = list(string)
     only_critical_addons_enabled = bool
     orchestrator_version         = string
     os_disk_size_gb              = number
@@ -340,9 +338,8 @@ variable "network_profile" {
 ####################
 
 variable "azure_ad_rbac" {
-  description = "Azure Active Directory role-based access control configuration"
+  description = "Azure Active Directory role-based access control configuration. Note: In v4.x, managed is deprecated - Azure AD integration is always managed"
   type = object({
-    managed                = bool
     tenant_id              = string
     admin_group_object_ids = list(string)
     azure_rbac_enabled     = bool
@@ -570,11 +567,10 @@ variable "run_command_enabled" {
 ####################
 
 variable "storage_profile" {
-  description = "Storage profile configuration"
+  description = "Storage profile configuration. Note: In v4.x, disk_driver_version is deprecated - version is managed automatically"
   type = object({
     blob_driver_enabled         = bool
     disk_driver_enabled         = bool
-    disk_driver_version         = string
     file_driver_enabled         = bool
     snapshot_controller_enabled = bool
   })
