@@ -1,0 +1,16 @@
+components:
+  terraform:
+    azure-document-intelligence:
+      vars:
+        # Development environment settings
+
+        # Use Standard tier for dev (F0 free tier has very low limits)
+        sku_name: "S0"
+
+        # Allow public access for easier development and testing
+        public_network_access_enabled: true
+
+        # Less restrictive network ACLs for development
+        network_acls:
+          default_action: "Allow"
+          ip_rules: []

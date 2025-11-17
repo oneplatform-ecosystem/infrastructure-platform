@@ -1,0 +1,28 @@
+components:
+  terraform:
+    azure-language-services:
+      metadata:
+        component: azure-language-services
+
+      vars:
+        enabled: true
+
+        # Azure Language Services SKU - S is the standard tier
+        sku_name: "S"
+
+        # Security Configuration - Production-ready defaults
+        public_network_access_enabled: false
+
+        # Custom subdomain - uses generated label ID if not specified
+        custom_subdomain_name: null
+
+        # Network ACLs - Secure by default
+        network_acls:
+          default_action: "Deny"
+          ip_rules: []
+          subnet_id: null
+          ignore_missing_vnet_service_endpoint: false
+
+        # Managed Identity - Disabled by default
+        identity_type: null
+        identity_ids: null
