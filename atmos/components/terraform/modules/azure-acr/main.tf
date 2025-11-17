@@ -77,10 +77,11 @@ resource "azurerm_container_registry" "this" {
   }
 
   # Encryption (Premium SKU only)
+  # Note: In AzureRM provider v4.x, encryption.enabled is deprecated
+  # Encryption is automatically enabled when key_vault_key_id is provided
   dynamic "encryption" {
     for_each = var.encryption != null ? [var.encryption] : []
     content {
-      enabled            = encryption.value.enabled
       key_vault_key_id   = encryption.value.key_vault_key_id
       identity_client_id = encryption.value.identity_client_id
     }
@@ -111,32 +112,15 @@ resource "azurerm_container_registry" "this" {
         }
       }
 
-      dynamic "virtual_network" {
-        for_each = network_rule_set.value.virtual_network_subnet_ids
-        content {
-          action    = "Allow"
-          subnet_id = virtual_network.value
-        }
-      }
+      # In AzureRM provider v4.x, virtual_network is deprecated
+      # Use public_network_access_enabled = false and network_rule_bypass_option instead
     }
   }
 
-  # Retention Policy (Premium SKU only)
-  dynamic "retention_policy" {
-    for_each = var.retention_policy != null ? [var.retention_policy] : []
-    content {
-      days    = retention_policy.value.days
-      enabled = retention_policy.value.enabled
-    }
-  }
-
-  # Trust Policy (Premium SKU only)
-  dynamic "trust_policy" {
-    for_each = var.trust_policy != null ? [var.trust_policy] : []
-    content {
-      enabled = trust_policy.value.enabled
-    }
-  }
+  # Note: retention_policy and trust_policy blocks are deprecated in AzureRM provider v4.x
+  # These are now managed through separate resources:
+  # - azurerm_container_registry_retention_policy
+  # - azurerm_container_registry_trust_policy
 
   tags = module.label.tags
 

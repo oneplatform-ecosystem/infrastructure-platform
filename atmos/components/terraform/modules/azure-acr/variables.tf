@@ -238,9 +238,8 @@ variable "identity_ids" {
 }
 
 variable "encryption" {
-  description = "Encryption configuration block. Only available for Premium SKU"
+  description = "Encryption configuration block. Only available for Premium SKU. Note: 'enabled' field is deprecated in v4.x - encryption is automatically enabled when key_vault_key_id is provided"
   type = object({
-    enabled            = bool
     key_vault_key_id   = string
     identity_client_id = string
   })
@@ -271,8 +270,14 @@ variable "network_rule_set" {
   default = null
 }
 
+# Note: retention_policy and trust_policy are deprecated in AzureRM provider v4.x
+# These are now managed through separate resources:
+# - azurerm_container_registry_retention_policy
+# - azurerm_container_registry_trust_policy
+# Keeping variables for backward compatibility but they will be ignored
+
 variable "retention_policy" {
-  description = "Retention policy for untagged manifests. Only available for Premium SKU"
+  description = "DEPRECATED: Retention policy is no longer supported in provider v4.x. Use azurerm_container_registry_retention_policy resource instead"
   type = object({
     days    = number
     enabled = bool
@@ -281,7 +286,7 @@ variable "retention_policy" {
 }
 
 variable "trust_policy" {
-  description = "Trust policy for signed images. Only available for Premium SKU"
+  description = "DEPRECATED: Trust policy is no longer supported in provider v4.x. Use azurerm_container_registry_trust_policy resource instead"
   type = object({
     enabled = bool
   })
