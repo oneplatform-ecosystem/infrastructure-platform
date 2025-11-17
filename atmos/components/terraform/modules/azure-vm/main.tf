@@ -129,18 +129,18 @@ resource "azurerm_linux_virtual_machine" "this" {
   source_image_id = var.source_image_id
 
   # Additional Configuration
-  computer_name                   = var.computer_name != null ? var.computer_name : local.vm_name
-  custom_data                     = var.custom_data
-  availability_set_id             = var.availability_set_id
-  zone                            = var.zone
-  encryption_at_host_enabled      = var.encryption_at_host_enabled
-  secure_boot_enabled             = var.secure_boot_enabled
-  vtpm_enabled                    = var.vtpm_enabled
-  patch_mode                      = var.linux_patch_mode
-  patch_assessment_mode           = var.patch_assessment_mode
-  provision_vm_agent              = var.provision_vm_agent
-  allow_extension_operations      = var.allow_extension_operations
-  license_type                    = var.license_type
+  computer_name              = var.computer_name != null ? var.computer_name : local.vm_name
+  custom_data                = var.custom_data
+  availability_set_id        = var.availability_set_id
+  zone                       = var.zone
+  encryption_at_host_enabled = var.encryption_at_host_enabled
+  secure_boot_enabled        = var.secure_boot_enabled
+  vtpm_enabled               = var.vtpm_enabled
+  patch_mode                 = var.linux_patch_mode
+  patch_assessment_mode      = var.patch_assessment_mode
+  provision_vm_agent         = var.provision_vm_agent
+  allow_extension_operations = var.allow_extension_operations
+  license_type               = var.license_type
 
   # Boot Diagnostics
   dynamic "boot_diagnostics" {
@@ -209,20 +209,20 @@ resource "azurerm_windows_virtual_machine" "this" {
   source_image_id = var.source_image_id
 
   # Additional Configuration
-  computer_name                   = var.computer_name != null ? var.computer_name : local.vm_name
-  custom_data                     = var.custom_data
-  availability_set_id             = var.availability_set_id
-  zone                            = var.zone
-  encryption_at_host_enabled      = var.encryption_at_host_enabled
-  secure_boot_enabled             = var.secure_boot_enabled
-  vtpm_enabled                    = var.vtpm_enabled
-  patch_mode                      = var.windows_patch_mode
-  patch_assessment_mode           = var.patch_assessment_mode
-  provision_vm_agent              = var.provision_vm_agent
-  allow_extension_operations      = var.allow_extension_operations
-  enable_automatic_updates        = var.enable_automatic_updates
-  license_type                    = var.license_type
-  timezone                        = var.timezone
+  computer_name              = var.computer_name != null ? var.computer_name : local.vm_name
+  custom_data                = var.custom_data
+  availability_set_id        = var.availability_set_id
+  zone                       = var.zone
+  encryption_at_host_enabled = var.encryption_at_host_enabled
+  secure_boot_enabled        = var.secure_boot_enabled
+  vtpm_enabled               = var.vtpm_enabled
+  patch_mode                 = var.windows_patch_mode
+  patch_assessment_mode      = var.patch_assessment_mode
+  provision_vm_agent         = var.provision_vm_agent
+  allow_extension_operations = var.allow_extension_operations
+  enable_automatic_updates   = var.enable_automatic_updates
+  license_type               = var.license_type
+  timezone                   = var.timezone
 
   # Boot Diagnostics
   dynamic "boot_diagnostics" {

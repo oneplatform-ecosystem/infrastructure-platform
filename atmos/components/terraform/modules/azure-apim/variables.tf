@@ -207,12 +207,12 @@ variable "tenant_access" {
 variable "hostname_configurations" {
   description = "Custom hostname configurations for API Management endpoints"
   type = list(object({
-    type                       = string # management, portal, developer_portal, proxy, scm, gateway
-    host_name                  = string
-    key_vault_id              = optional(string)
-    certificate               = optional(string)
-    certificate_password      = optional(string)
-    negotiate_client_certificate = optional(bool)
+    type                            = string # management, portal, developer_portal, proxy, scm, gateway
+    host_name                       = string
+    key_vault_id                    = optional(string)
+    certificate                     = optional(string)
+    certificate_password            = optional(string)
+    negotiate_client_certificate    = optional(bool)
     ssl_keyvault_identity_client_id = optional(string)
   }))
   default = []
