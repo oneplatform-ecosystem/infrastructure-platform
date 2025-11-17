@@ -1,0 +1,11 @@
+components:
+  terraform:
+    azure-datafactory:
+      vars:
+        # Development environment settings
+        public_network_enabled: true
+        managed_virtual_network_enabled: false
+
+        tags:
+          Environment: "Development"
+          CostCenter: "Engineering"

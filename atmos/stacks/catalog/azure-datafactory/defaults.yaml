@@ -1,0 +1,27 @@
+components:
+  terraform:
+    azure-datafactory:
+      metadata:
+        component: azure-datafactory
+        type: service
+
+      settings:
+        spacelift:
+          workspace_enabled: true
+
+      vars:
+        enabled: true
+
+        # Naming
+        name: "datafactory"
+        delimiter: ""
+        regex_replace_chars: "/[^a-zA-Z0-9]/"
+
+        # Data Factory Configuration
+        public_network_enabled: true
+        managed_virtual_network_enabled: false
+        identity_type: "SystemAssigned"
+
+        tags:
+          ManagedBy: "Terraform"
+          Component: "azure-datafactory"
