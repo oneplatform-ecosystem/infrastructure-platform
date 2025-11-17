@@ -1,0 +1,93 @@
+components:
+  terraform:
+    azure-aks:
+      vars:
+        # Development uses Free tier for cost savings
+        sku_tier: "Free"
+
+        # Public cluster for easier access in development
+        private_cluster_enabled: false
+
+        # Smaller, more cost-effective node pool
+        default_node_pool:
+          name: "system"
+          vm_size: "Standard_B2s"  # Burstable VMs for dev
+          zones: ["1"]  # Single zone for cost savings
+          enable_auto_scaling: true
+          min_count: 1
+          max_count: 3
+          node_count: 1
+          max_pods: 30
+          os_disk_size_gb: 50
+          os_disk_type: "Managed"
+          only_critical_addons_enabled: false
+          upgrade_settings:
+            max_surge: "50%"  # Faster upgrades in dev
+
+        # No additional node pools by default in dev
+        additional_node_pools: {}
+
+        # Network configuration
+        network_profile:
+          network_plugin: "azure"
+          network_policy: "azure"
+          dns_service_ip: "10.100.0.10"
+          service_cidr: "10.100.0.0/16"
+          load_balancer_sku: "standard"
+          outbound_type: "loadBalancer"
+          load_balancer_profile:
+            managed_outbound_ip_count: 1
+
+        # Enable RBAC but allow local accounts for easier development
+        role_based_access_control_enabled: true
+        local_account_disabled: false
+
+        # No Azure AD integration in dev (optional)
+        azure_ad_rbac: null
+
+        # Monitoring - optional in dev
+        oms_agent: null
+
+        # Add-ons
+        azure_policy_enabled: false
+        http_application_routing_enabled: false
+
+        # No workload identity in dev
+        workload_identity_enabled: false
+        oidc_issuer_enabled: false
+
+        # No automatic upgrades in dev
+        automatic_channel_upgrade: null
+        node_os_channel_upgrade: null
+
+        # No maintenance window in dev
+        maintenance_window: null
+
+        # Enable run command for debugging
+        run_command_enabled: true
+
+        # Auto scaler profile - aggressive scaling for cost savings
+        auto_scaler_profile:
+          balance_similar_node_groups: false
+          expander: "least-waste"
+          max_graceful_termination_sec: 600
+          max_node_provisioning_time: "15m"
+          max_unready_nodes: 3
+          max_unready_percentage: 45
+          new_pod_scale_up_delay: "0s"
+          scale_down_delay_after_add: "10m"
+          scale_down_delay_after_delete: "10s"
+          scale_down_delay_after_failure: "3m"
+          scan_interval: "10s"
+          scale_down_unneeded: "10m"
+          scale_down_unready: "20m"
+          scale_down_utilization_threshold: "0.5"
+          empty_bulk_delete_max: 10
+          skip_nodes_with_local_storage: true
+          skip_nodes_with_system_pods: true
+
+        # Development tags
+        tags:
+          Environment: "Development"
+          CostCenter: "Engineering"
+          AutoShutdown: "true"
