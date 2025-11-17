@@ -103,9 +103,9 @@ variable "public_network_access_enabled" {
 }
 
 variable "ip_range_filter" {
-  description = "Comma-separated list of IP addresses or CIDR ranges to allow access from. Set to empty string to disable IP filtering"
-  type        = string
-  default     = ""
+  description = "Set of IP addresses or CIDR ranges to allow access from. Set to empty set to disable IP filtering"
+  type        = set(string)
+  default     = []
 }
 
 variable "network_acl_bypass_for_azure_services" {

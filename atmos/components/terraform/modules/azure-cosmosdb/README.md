@@ -120,7 +120,7 @@ module "cosmosdb_secure" {
   ]
 
   # IP Filtering
-  ip_range_filter = "203.0.113.0/24,198.51.100.0/24"
+  ip_range_filter = ["203.0.113.0/24", "198.51.100.0/24"]
 
   # Azure Services Bypass
   network_acl_bypass_for_azure_services = true

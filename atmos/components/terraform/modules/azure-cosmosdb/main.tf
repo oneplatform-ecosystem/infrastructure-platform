@@ -67,11 +67,11 @@ resource "azurerm_cosmosdb_account" "this" {
     }
   }
 
-  enable_automatic_failover       = var.enable_automatic_failover
-  enable_multiple_write_locations = var.enable_multiple_write_locations
-  enable_free_tier                = var.enable_free_tier
-  analytical_storage_enabled      = var.analytical_storage_enabled
-  public_network_access_enabled   = var.public_network_access_enabled
+  automatic_failover_enabled       = var.enable_automatic_failover
+  multiple_write_locations_enabled = var.enable_multiple_write_locations
+  free_tier_enabled                = var.enable_free_tier
+  analytical_storage_enabled       = var.analytical_storage_enabled
+  public_network_access_enabled    = var.public_network_access_enabled
 
   ip_range_filter                       = var.ip_range_filter
   network_acl_bypass_for_azure_services = var.network_acl_bypass_for_azure_services
