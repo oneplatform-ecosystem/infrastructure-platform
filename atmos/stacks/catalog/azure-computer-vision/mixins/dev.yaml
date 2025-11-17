@@ -2,10 +2,15 @@ components:
   terraform:
     azure-computer-vision:
       vars:
-        # Development environment may use Free tier for testing
-        # Uncomment to use Free tier:
-        # sku_name: "F0"
+        # Development environment settings
 
-        # Development may allow public access for testing
-        # Uncomment to enable public access:
-        # public_network_access_enabled: true
+        # Use Standard tier for dev (F0 free tier has very low limits)
+        sku_name: "S1"
+
+        # Allow public access for easier development and testing
+        public_network_access_enabled: true
+
+        # Less restrictive network ACLs for development
+        network_acls:
+          default_action: "Allow"
+          ip_rules: []
