@@ -36,14 +36,17 @@ variable "deployments" {
     - model_format: The format of the model (e.g., 'OpenAI')
     - model_name: The name of the model (e.g., 'gpt-4', 'gpt-35-turbo', 'text-embedding-ada-002')
     - model_version: The version of the model (e.g., '0613', '1106')
-    - scale_type: The type of scaling (e.g., 'Standard')
+    - scale_type: The SKU name/type of scaling (e.g., 'Standard', 'GlobalStandard', 'ProvisionedManaged')
     - scale_capacity: The capacity for scaling (optional, default: 1)
-    - scale_tier: The tier for scaling (optional)
-    - scale_size: The size for scaling (optional)
-    - scale_family: The family for scaling (optional)
+    - scale_tier: DEPRECATED in v4.x - No longer used, will be ignored
+    - scale_size: DEPRECATED in v4.x - No longer used, will be ignored
+    - scale_family: DEPRECATED in v4.x - No longer used, will be ignored
     - rai_policy_name: The name of the RAI policy (optional)
     - version_upgrade_option: The version upgrade option (optional, e.g., 'OnceCurrentVersionExpired', 'OnceNewDefaultVersionAvailable', 'NoAutoUpgrade')
     - dynamic_throttling_enabled: Whether dynamic throttling is enabled (optional, default: false)
+
+    Note: In AzureRM provider v4.x, the scale block has been replaced with a sku block.
+    The scale_type maps to sku.name, and scale_tier/scale_size/scale_family are no longer used.
   EOT
   type = map(object({
     model_format               = string
