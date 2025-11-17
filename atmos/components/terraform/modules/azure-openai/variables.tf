@@ -68,7 +68,19 @@ variable "identity_ids" {
 
 # Model Deployments
 variable "model_deployments" {
-  description = "Map of AI model deployments to create in the Azure OpenAI Service"
+  description = <<-EOT
+    Map of AI model deployments to create in the Azure OpenAI Service.
+    Each deployment requires:
+    - model_format: The format of the model (e.g., 'OpenAI')
+    - model_name: The name of the model (e.g., 'gpt-4', 'gpt-35-turbo')
+    - model_version: The version of the model (e.g., '0613', '1106')
+    - scale_type: The SKU name/type of scaling (e.g., 'Standard', 'GlobalStandard', 'ProvisionedManaged')
+    - scale_capacity: The capacity for scaling (optional, default: 1)
+    - rai_policy_name: The name of the RAI policy (optional)
+
+    Note: In AzureRM provider v4.x, the scale block has been replaced with a sku block.
+    The scale_type maps to sku.name.
+  EOT
   type = map(object({
     model_format    = string
     model_name      = string
