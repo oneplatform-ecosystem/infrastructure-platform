@@ -1,0 +1,42 @@
+components:
+  terraform:
+    azure-postgres-database:
+      metadata:
+        component: azure-postgres
+        type: real
+      vars:
+        enabled: true
+        delimiter: ""
+        regex_replace_chars: "/[^a-zA-Z0-9]/"
+        label_order:
+          - namespace
+          - name
+          - environment
+
+        # Server Configuration
+        postgres_version: "16"
+        sku_name: "B_Standard_B1ms"
+        storage_mb: 32768
+        auto_grow_enabled: true
+
+        # Backup Configuration
+        backup_retention_days: 7
+        geo_redundant_backup_enabled: false
+
+        # Network Security
+        public_network_access_enabled: false
+
+        # High Availability (disabled by default)
+        high_availability_enabled: false
+
+        # Firewall Rules - Allow Azure Services by default
+        firewall_rules:
+          allow-azure-services:
+            start_ip_address: "0.0.0.0"
+            end_ip_address: "0.0.0.0"
+
+        # Databases (empty by default - define in stack)
+        databases: {}
+
+        # Server Configurations (empty by default)
+        server_configurations: {}
