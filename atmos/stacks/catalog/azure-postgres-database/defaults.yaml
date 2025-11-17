@@ -1,0 +1,18 @@
+components:
+  terraform:
+    azure-postgres-db:
+      metadata:
+        component: azure-postgres-database
+        type: real
+      vars:
+        enabled: true
+        delimiter: ""
+        regex_replace_chars: "/[^a-zA-Z0-9]/"
+        label_order:
+          - namespace
+          - name
+          - environment
+
+        # Database Configuration
+        collation: "en_US.utf8"
+        charset: "UTF8"

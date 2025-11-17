@@ -1,0 +1,13 @@
+components:
+  terraform:
+    azure-postgres-db:
+      vars:
+        stage: "dev"
+
+        # Development database configuration
+        collation: "en_US.utf8"
+        charset: "UTF8"
+
+        tags:
+          Environment: "Development"
+          CostCenter: "Engineering"
