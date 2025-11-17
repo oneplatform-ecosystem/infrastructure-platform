@@ -160,8 +160,10 @@ variable "long_term_retention_policy" {
 }
 
 # Security
+# Note: threat_detection_policy is deprecated in AzureRM v4.x
+# Use azurerm_mssql_server_security_alert_policy resource instead
 variable "threat_detection_policy" {
-  description = "Threat detection policy configuration"
+  description = "DEPRECATED: Use azurerm_mssql_server_security_alert_policy resource instead. This variable is ignored in provider v4.x"
   type = object({
     state                      = optional(string, "Enabled")
     disabled_alerts            = optional(list(string), [])

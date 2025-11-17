@@ -1,0 +1,37 @@
+# stacks/catalog/azure-vm/mixins/dev.yaml
+
+components:
+  terraform:
+    azure-vm:
+      vars:
+        # Development environment settings - Smaller VM size for cost savings
+        vm_size: "Standard_B2s"
+
+        # OS Disk - Standard SSD for cost savings in dev
+        os_disk_storage_account_type: "StandardSSD_LRS"
+
+        # Network Configuration
+        # Public IP can be enabled in dev for easier access (with proper NSG rules)
+        create_public_ip: false  # Keep disabled by default, enable per VM as needed
+
+        # Security - Relaxed for development but still secure
+        encryption_at_host_enabled: false
+        secure_boot_enabled: false
+        vtpm_enabled: false
+
+        # Patching - Manual for dev to avoid unexpected restarts
+        linux_patch_mode: "ImageDefault"
+        windows_patch_mode: "Manual"
+        patch_assessment_mode: "ImageDefault"
+
+        # Boot Diagnostics - Can be enabled per VM
+        boot_diagnostics_storage_account_uri: null
+
+        # Managed Identity - Can be enabled per VM
+        identity_type: null
+
+        # Tags for development
+        tags:
+          Environment: "Development"
+          CostCenter: "Engineering"
+          AutoShutdown: "True"  # For Azure auto-shutdown policies

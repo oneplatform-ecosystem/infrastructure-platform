@@ -86,18 +86,9 @@ resource "azurerm_mssql_database" "this" {
     }
   }
 
-  dynamic "threat_detection_policy" {
-    for_each = var.threat_detection_policy != null ? [var.threat_detection_policy] : []
-    content {
-      state                      = lookup(threat_detection_policy.value, "state", "Enabled")
-      disabled_alerts            = lookup(threat_detection_policy.value, "disabled_alerts", [])
-      email_account_admins       = lookup(threat_detection_policy.value, "email_account_admins", "Disabled")
-      email_addresses            = lookup(threat_detection_policy.value, "email_addresses", [])
-      retention_days             = lookup(threat_detection_policy.value, "retention_days", 0)
-      storage_account_access_key = lookup(threat_detection_policy.value, "storage_account_access_key", null)
-      storage_endpoint           = lookup(threat_detection_policy.value, "storage_endpoint", null)
-    }
-  }
+  # Note: threat_detection_policy block is deprecated in AzureRM v4.x
+  # Use azurerm_mssql_server_security_alert_policy resource instead
+  # See: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mssql_server_security_alert_policy
 
   tags = module.label.tags
 }

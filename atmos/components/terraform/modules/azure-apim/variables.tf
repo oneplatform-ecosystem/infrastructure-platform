@@ -207,12 +207,12 @@ variable "tenant_access" {
 variable "hostname_configurations" {
   description = "Custom hostname configurations for API Management endpoints"
   type = list(object({
-    type                       = string # management, portal, developer_portal, proxy, scm, gateway
-    host_name                  = string
-    key_vault_id              = optional(string)
-    certificate               = optional(string)
-    certificate_password      = optional(string)
-    negotiate_client_certificate = optional(bool)
+    type                            = string # management, portal, developer_portal, proxy, scm, gateway
+    host_name                       = string
+    key_vault_id                    = optional(string)
+    certificate                     = optional(string)
+    certificate_password            = optional(string)
+    negotiate_client_certificate    = optional(bool)
     ssl_keyvault_identity_client_id = optional(string)
   }))
   default = []
@@ -246,8 +246,11 @@ variable "additional_locations" {
 }
 
 # Policy Configuration
+# Note: DEPRECATED in AzureRM provider v4.x
+# The policy block has been removed from azurerm_api_management resource
+# Use the separate resource azurerm_api_management_policy instead
 variable "policy" {
-  description = "Global policy configuration for API Management"
+  description = "DEPRECATED: Global policy configuration for API Management. In v4.x, use azurerm_api_management_policy resource instead. This variable is ignored."
   type = object({
     xml_content = optional(string)
     xml_link    = optional(string)

@@ -62,7 +62,7 @@ variable "redis_version" {
 }
 
 variable "enable_non_ssl_port" {
-  description = "Enable the non-SSL port (6379) - disabled by default for security"
+  description = "Enable the non-SSL port (6379) - disabled by default for security. Note: In v4.x, this maps to non_ssl_port_enabled argument name."
   type        = bool
   default     = false
 }
@@ -85,9 +85,14 @@ variable "public_network_access_enabled" {
 
 # Redis Configuration
 variable "redis_configuration" {
-  description = "Redis configuration options"
+  description = <<-EOT
+    Redis configuration options.
+    Note: In AzureRM provider v4.x, enable_authentication has been deprecated and removed.
+    Authentication is now always enabled for security reasons and cannot be disabled.
+    The enable_authentication field is still accepted for backward compatibility but is ignored.
+  EOT
   type = object({
-    enable_authentication           = optional(bool)
+    enable_authentication           = optional(bool, true)
     maxmemory_reserved              = optional(number)
     maxmemory_delta                 = optional(number)
     maxmemory_policy                = optional(string)
@@ -122,11 +127,7 @@ variable "zones" {
   default     = null
 }
 
-variable "replicas_per_master" {
-  description = "Amount of replicas to create per master for this Redis Cache. Only available when using the Premium SKU"
-  type        = number
-  default     = null
-}
+# Note: replicas_per_master is deprecated in AzureRM v4.x - use replicas_per_primary instead
 
 variable "replicas_per_primary" {
   description = "Amount of replicas to create per primary for this Redis Cache. Only available when using the Premium SKU"

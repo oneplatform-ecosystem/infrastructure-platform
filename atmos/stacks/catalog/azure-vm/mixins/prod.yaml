@@ -1,0 +1,46 @@
+# stacks/catalog/azure-vm/mixins/prod.yaml
+
+components:
+  terraform:
+    azure-vm:
+      vars:
+        # Production environment settings - Performance and reliability focused
+        vm_size: "Standard_D2s_v3"
+
+        # OS Disk - Premium SSD for better performance
+        os_disk_storage_account_type: "Premium_LRS"
+
+        # Network Configuration
+        # Public IP should be disabled in production (use private endpoints/VPN)
+        create_public_ip: false
+
+        # Enable accelerated networking for better performance
+        enable_accelerated_networking: true
+
+        # Security - Enhanced for production
+        encryption_at_host_enabled: true
+        secure_boot_enabled: true
+        vtpm_enabled: true
+
+        # Patching - Automated for production with maintenance windows
+        linux_patch_mode: "AutomaticByPlatform"
+        windows_patch_mode: "AutomaticByPlatform"
+        patch_assessment_mode: "AutomaticByPlatform"
+
+        # Boot Diagnostics - Should be enabled in production
+        # boot_diagnostics_storage_account_uri must be set per deployment
+
+        # Managed Identity - SystemAssigned recommended for production
+        identity_type: "SystemAssigned"
+
+        # High Availability - Should use availability zones in production
+        # zone should be set per deployment (1, 2, or 3)
+        # zones should be set for public IPs if created
+
+        # Tags for production
+        tags:
+          Environment: "Production"
+          CostCenter: "Operations"
+          Criticality: "High"
+          BackupPolicy: "Daily"
+          DataClassification: "Confidential"

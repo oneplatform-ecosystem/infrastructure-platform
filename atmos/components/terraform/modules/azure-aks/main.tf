@@ -40,7 +40,7 @@ resource "random_string" "suffix" {
 locals {
   aks_name = var.enabled ? (
     var.add_random_suffix ?
-    "${module.label.id}${random_string.suffix[0].result}" :
+    "${module.label.id}${try(random_string.suffix[0].result, "")}" :
     coalesce(var.cluster_name, module.label.id)
   ) : ""
 }
@@ -73,24 +73,24 @@ resource "azurerm_kubernetes_cluster" "this" {
   dynamic "api_server_access_profile" {
     for_each = var.api_server_access_profile != null ? [var.api_server_access_profile] : []
     content {
-      authorized_ip_ranges     = api_server_access_profile.value.authorized_ip_ranges
-      subnet_id                = api_server_access_profile.value.subnet_id
-      vnet_integration_enabled = api_server_access_profile.value.vnet_integration_enabled
+      authorized_ip_ranges = api_server_access_profile.value.authorized_ip_ranges
+      subnet_id            = api_server_access_profile.value.subnet_id
+      # Note: vnet_integration_enabled removed in v4.x - VNet integration is automatic when subnet_id is provided
     }
   }
 
   # Default Node Pool
   default_node_pool {
-    name                         = var.default_node_pool.name
-    vm_size                      = var.default_node_pool.vm_size
-    vnet_subnet_id               = var.default_node_pool.vnet_subnet_id
-    zones                        = var.default_node_pool.zones
-    enable_auto_scaling          = var.default_node_pool.enable_auto_scaling
-    enable_host_encryption       = var.default_node_pool.enable_host_encryption
-    enable_node_public_ip        = var.default_node_pool.enable_node_public_ip
-    max_pods                     = var.default_node_pool.max_pods
-    node_labels                  = var.default_node_pool.node_labels
-    node_taints                  = var.default_node_pool.node_taints
+    name                    = var.default_node_pool.name
+    vm_size                 = var.default_node_pool.vm_size
+    vnet_subnet_id          = var.default_node_pool.vnet_subnet_id
+    zones                   = var.default_node_pool.zones
+    auto_scaling_enabled    = var.default_node_pool.enable_auto_scaling
+    host_encryption_enabled = var.default_node_pool.enable_host_encryption
+    node_public_ip_enabled  = var.default_node_pool.enable_node_public_ip
+    max_pods                = var.default_node_pool.max_pods
+    node_labels             = var.default_node_pool.node_labels
+    # Note: node_taints removed in default_node_pool in v4.x - only supported in additional node pools
     only_critical_addons_enabled = var.default_node_pool.only_critical_addons_enabled
     orchestrator_version         = var.default_node_pool.orchestrator_version
     os_disk_size_gb              = var.default_node_pool.os_disk_size_gb
@@ -152,7 +152,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   dynamic "azure_active_directory_role_based_access_control" {
     for_each = var.azure_ad_rbac != null ? [var.azure_ad_rbac] : []
     content {
-      managed                = azure_active_directory_role_based_access_control.value.managed
+      # Note: managed removed in v4.x - Azure AD integration is always "managed"
       tenant_id              = azure_active_directory_role_based_access_control.value.tenant_id
       admin_group_object_ids = azure_active_directory_role_based_access_control.value.admin_group_object_ids
       azure_rbac_enabled     = azure_active_directory_role_based_access_control.value.azure_rbac_enabled
@@ -199,8 +199,9 @@ resource "azurerm_kubernetes_cluster" "this" {
   # Azure Policy
   azure_policy_enabled = var.azure_policy_enabled
 
-  # HTTP Application Routing (deprecated but still supported)
-  http_application_routing_enabled = var.http_application_routing_enabled
+  # Note: http_application_routing_enabled is deprecated in AzureRM v4.x
+  # HTTP Application Routing add-on is being retired and should not be used for new deployments
+  # Use Azure Application Gateway Ingress Controller (AGIC) or nginx ingress controller instead
 
   # Key Vault Secrets Provider
   dynamic "key_vault_secrets_provider" {
@@ -265,11 +266,11 @@ resource "azurerm_kubernetes_cluster" "this" {
     }
   }
 
-  # Automatic Channel Upgrade
-  automatic_channel_upgrade = var.automatic_channel_upgrade
+  # Automatic Upgrade Channel (renamed in v4.x)
+  automatic_upgrade_channel = var.automatic_channel_upgrade
 
-  # Node OS Channel Upgrade
-  node_os_channel_upgrade = var.node_os_channel_upgrade
+  # Node OS Upgrade Channel (renamed in v4.x)
+  node_os_upgrade_channel = var.node_os_channel_upgrade
 
   # Image Cleaner
   image_cleaner_enabled        = var.image_cleaner_enabled
@@ -289,9 +290,9 @@ resource "azurerm_kubernetes_cluster" "this" {
   dynamic "storage_profile" {
     for_each = var.storage_profile != null ? [var.storage_profile] : []
     content {
-      blob_driver_enabled         = storage_profile.value.blob_driver_enabled
-      disk_driver_enabled         = storage_profile.value.disk_driver_enabled
-      disk_driver_version         = storage_profile.value.disk_driver_version
+      blob_driver_enabled = storage_profile.value.blob_driver_enabled
+      disk_driver_enabled = storage_profile.value.disk_driver_enabled
+      # Note: disk_driver_version removed in v4.x - version is managed automatically
       file_driver_enabled         = storage_profile.value.file_driver_enabled
       snapshot_controller_enabled = storage_profile.value.snapshot_controller_enabled
     }
@@ -303,7 +304,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     ignore_changes = [
       # Ignore changes to Kubernetes version as it may be managed outside Terraform
       kubernetes_version,
-      default_node_pool[0].orchestrator_version,
+      default_node_pool[0].orchestrator_version
     ]
   }
 }
@@ -322,9 +323,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "this" {
 
   # Node configuration
   zones                        = each.value.zones
-  enable_auto_scaling          = each.value.enable_auto_scaling
-  enable_host_encryption       = each.value.enable_host_encryption
-  enable_node_public_ip        = each.value.enable_node_public_ip
+  auto_scaling_enabled         = each.value.enable_auto_scaling
+  host_encryption_enabled      = each.value.enable_host_encryption
+  node_public_ip_enabled       = each.value.enable_node_public_ip
   max_pods                     = each.value.max_pods
   mode                         = each.value.mode
   node_labels                  = each.value.node_labels
@@ -360,7 +361,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "this" {
   lifecycle {
     ignore_changes = [
       # Ignore changes to orchestrator version as it may be managed outside Terraform
-      orchestrator_version,
+      orchestrator_version
     ]
   }
 }

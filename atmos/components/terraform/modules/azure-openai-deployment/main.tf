@@ -45,12 +45,11 @@ resource "azurerm_cognitive_deployment" "deployments" {
     version = each.value.model_version
   }
 
-  scale {
-    type     = each.value.scale_type
+  # Note: In AzureRM provider v4.x, scale block has been replaced with sku block
+  # The scale_type is now the sku name, and tier/size/family are no longer used
+  sku {
+    name     = each.value.scale_type
     capacity = each.value.scale_capacity
-    tier     = each.value.scale_tier
-    size     = each.value.scale_size
-    family   = each.value.scale_family
   }
 
   rai_policy_name            = each.value.rai_policy_name

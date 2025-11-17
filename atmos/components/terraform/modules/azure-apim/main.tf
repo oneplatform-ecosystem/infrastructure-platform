@@ -239,14 +239,8 @@ resource "azurerm_api_management" "this" {
     }
   }
 
-  # Policy
-  dynamic "policy" {
-    for_each = var.policy != null ? [var.policy] : []
-    content {
-      xml_content = policy.value.xml_content
-      xml_link    = policy.value.xml_link
-    }
-  }
+  # Note: policy block is deprecated in AzureRM provider v4.x
+  # Policies are now managed through a separate resource: azurerm_api_management_policy
 
   # Notification Sender Email
   notification_sender_email = var.notification_sender_email

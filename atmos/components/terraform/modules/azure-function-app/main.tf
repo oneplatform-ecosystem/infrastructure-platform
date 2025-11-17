@@ -119,7 +119,7 @@ resource "azurerm_linux_function_app" "this" {
   lifecycle {
     ignore_changes = [
       app_settings["WEBSITE_RUN_FROM_PACKAGE"],
-      zip_deploy_file,
+      zip_deploy_file
     ]
   }
 }
@@ -222,7 +222,7 @@ resource "azurerm_windows_function_app" "this" {
   lifecycle {
     ignore_changes = [
       app_settings["WEBSITE_RUN_FROM_PACKAGE"],
-      zip_deploy_file,
+      zip_deploy_file
     ]
   }
 }
