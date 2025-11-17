@@ -127,7 +127,7 @@ resource "azurerm_container_registry" "this" {
   lifecycle {
     ignore_changes = [
       # Ignore changes to georeplications tags as they are managed separately
-      georeplications,
+      georeplications
     ]
   }
 }

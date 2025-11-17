@@ -75,7 +75,7 @@ resource "azurerm_key_vault" "this" {
 
   lifecycle {
     ignore_changes = [
-      access_policy, # Manage access policies separately to avoid conflicts
+      access_policy # Manage access policies separately to avoid conflicts
     ]
   }
 }

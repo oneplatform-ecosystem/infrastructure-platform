@@ -78,7 +78,6 @@ resource "azurerm_redis_cache" "this" {
 
   # Premium SKU Features
   zones                = var.zones
-  replicas_per_master  = var.replicas_per_master
   replicas_per_primary = var.replicas_per_primary
   shard_count          = var.shard_count
   subnet_id            = var.subnet_id

@@ -122,11 +122,7 @@ variable "zones" {
   default     = null
 }
 
-variable "replicas_per_master" {
-  description = "Amount of replicas to create per master for this Redis Cache. Only available when using the Premium SKU"
-  type        = number
-  default     = null
-}
+# Note: replicas_per_master is deprecated in AzureRM v4.x - use replicas_per_primary instead
 
 variable "replicas_per_primary" {
   description = "Amount of replicas to create per primary for this Redis Cache. Only available when using the Premium SKU"

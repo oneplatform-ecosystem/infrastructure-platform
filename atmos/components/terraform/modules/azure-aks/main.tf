@@ -303,7 +303,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     ignore_changes = [
       # Ignore changes to Kubernetes version as it may be managed outside Terraform
       kubernetes_version,
-      default_node_pool[0].orchestrator_version,
+      default_node_pool[0].orchestrator_version
     ]
   }
 }
@@ -360,7 +360,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "this" {
   lifecycle {
     ignore_changes = [
       # Ignore changes to orchestrator version as it may be managed outside Terraform
-      orchestrator_version,
+      orchestrator_version
     ]
   }
 }
