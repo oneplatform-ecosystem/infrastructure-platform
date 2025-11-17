@@ -246,8 +246,11 @@ variable "additional_locations" {
 }
 
 # Policy Configuration
+# Note: DEPRECATED in AzureRM provider v4.x
+# The policy block has been removed from azurerm_api_management resource
+# Use the separate resource azurerm_api_management_policy instead
 variable "policy" {
-  description = "Global policy configuration for API Management"
+  description = "DEPRECATED: Global policy configuration for API Management. In v4.x, use azurerm_api_management_policy resource instead. This variable is ignored."
   type = object({
     xml_content = optional(string)
     xml_link    = optional(string)
