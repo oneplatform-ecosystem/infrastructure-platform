@@ -22,11 +22,11 @@ locals {
   # VM name
   vm_name = var.enabled ? coalesce(var.vm_name, module.label.id) : null
   # NIC name
-  nic_name = var.enabled ? coalesce(var.nic_name, "${local.vm_name}-nic") : null
+  nic_name = var.enabled ? coalesce(var.nic_name, "${coalesce(var.vm_name, module.label.id)}-nic") : null
   # Public IP name
-  public_ip_name = var.enabled && var.create_public_ip ? coalesce(var.public_ip_name, "${local.vm_name}-pip") : null
+  public_ip_name = var.enabled && var.create_public_ip ? coalesce(var.public_ip_name, "${coalesce(var.vm_name, module.label.id)}-pip") : null
   # OS disk name
-  os_disk_name = var.enabled ? coalesce(var.os_disk_name, "${local.vm_name}-osdisk") : null
+  os_disk_name = var.enabled ? coalesce(var.os_disk_name, "${coalesce(var.vm_name, module.label.id)}-osdisk") : null
 }
 
 # Public IP Address (optional)
