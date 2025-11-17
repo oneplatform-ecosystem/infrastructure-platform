@@ -22,8 +22,8 @@ module "label" {
   label_key_case      = var.label_key_case
   label_value_case    = var.label_value_case
 
-  additional_tag_map  = var.additional_tag_map
-  context             = var.context
+  additional_tag_map = var.additional_tag_map
+  context            = var.context
 }
 
 ####################
@@ -102,8 +102,8 @@ resource "azurerm_kubernetes_cluster" "this" {
     ultra_ssd_enabled            = var.default_node_pool.ultra_ssd_enabled
 
     # Auto-scaling configuration
-    min_count = var.default_node_pool.enable_auto_scaling ? var.default_node_pool.min_count : null
-    max_count = var.default_node_pool.enable_auto_scaling ? var.default_node_pool.max_count : null
+    min_count  = var.default_node_pool.enable_auto_scaling ? var.default_node_pool.min_count : null
+    max_count  = var.default_node_pool.enable_auto_scaling ? var.default_node_pool.max_count : null
     node_count = var.default_node_pool.enable_auto_scaling ? null : var.default_node_pool.node_count
 
     # Upgrade settings
@@ -125,14 +125,14 @@ resource "azurerm_kubernetes_cluster" "this" {
 
   # Network Profile
   network_profile {
-    network_plugin      = var.network_profile.network_plugin
-    network_mode        = var.network_profile.network_mode
-    network_policy      = var.network_profile.network_policy
-    dns_service_ip      = var.network_profile.dns_service_ip
-    service_cidr        = var.network_profile.service_cidr
-    pod_cidr            = var.network_profile.pod_cidr
-    outbound_type       = var.network_profile.outbound_type
-    load_balancer_sku   = var.network_profile.load_balancer_sku
+    network_plugin    = var.network_profile.network_plugin
+    network_mode      = var.network_profile.network_mode
+    network_policy    = var.network_profile.network_policy
+    dns_service_ip    = var.network_profile.dns_service_ip
+    service_cidr      = var.network_profile.service_cidr
+    pod_cidr          = var.network_profile.pod_cidr
+    outbound_type     = var.network_profile.outbound_type
+    load_balancer_sku = var.network_profile.load_balancer_sku
 
     # Load Balancer Profile
     dynamic "load_balancer_profile" {
@@ -327,26 +327,26 @@ resource "azurerm_kubernetes_cluster_node_pool" "this" {
   vnet_subnet_id        = each.value.vnet_subnet_id
 
   # Node configuration
-  zones                  = each.value.zones
-  enable_auto_scaling    = each.value.enable_auto_scaling
-  enable_host_encryption = each.value.enable_host_encryption
-  enable_node_public_ip  = each.value.enable_node_public_ip
-  max_pods               = each.value.max_pods
-  mode                   = each.value.mode
-  node_labels            = each.value.node_labels
-  node_taints            = each.value.node_taints
-  orchestrator_version   = each.value.orchestrator_version
-  os_disk_size_gb        = each.value.os_disk_size_gb
-  os_disk_type           = each.value.os_disk_type
-  os_sku                 = each.value.os_sku
-  os_type                = each.value.os_type
-  pod_subnet_id          = each.value.pod_subnet_id
-  priority               = each.value.priority
+  zones                        = each.value.zones
+  enable_auto_scaling          = each.value.enable_auto_scaling
+  enable_host_encryption       = each.value.enable_host_encryption
+  enable_node_public_ip        = each.value.enable_node_public_ip
+  max_pods                     = each.value.max_pods
+  mode                         = each.value.mode
+  node_labels                  = each.value.node_labels
+  node_taints                  = each.value.node_taints
+  orchestrator_version         = each.value.orchestrator_version
+  os_disk_size_gb              = each.value.os_disk_size_gb
+  os_disk_type                 = each.value.os_disk_type
+  os_sku                       = each.value.os_sku
+  os_type                      = each.value.os_type
+  pod_subnet_id                = each.value.pod_subnet_id
+  priority                     = each.value.priority
   proximity_placement_group_id = each.value.proximity_placement_group_id
-  scale_down_mode        = each.value.scale_down_mode
-  snapshot_id            = each.value.snapshot_id
-  spot_max_price         = each.value.spot_max_price
-  ultra_ssd_enabled      = each.value.ultra_ssd_enabled
+  scale_down_mode              = each.value.scale_down_mode
+  snapshot_id                  = each.value.snapshot_id
+  spot_max_price               = each.value.spot_max_price
+  ultra_ssd_enabled            = each.value.ultra_ssd_enabled
 
   # Auto-scaling configuration
   min_count  = each.value.enable_auto_scaling ? each.value.min_count : null

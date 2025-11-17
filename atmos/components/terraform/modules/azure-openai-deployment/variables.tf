@@ -46,17 +46,17 @@ variable "deployments" {
     - dynamic_throttling_enabled: Whether dynamic throttling is enabled (optional, default: false)
   EOT
   type = map(object({
-    model_format                 = string
-    model_name                   = string
-    model_version                = string
-    scale_type                   = string
-    scale_capacity               = optional(number, 1)
-    scale_tier                   = optional(string)
-    scale_size                   = optional(string)
-    scale_family                 = optional(string)
-    rai_policy_name              = optional(string)
-    version_upgrade_option       = optional(string, "OnceCurrentVersionExpired")
-    dynamic_throttling_enabled   = optional(bool, false)
+    model_format               = string
+    model_name                 = string
+    model_version              = string
+    scale_type                 = string
+    scale_capacity             = optional(number, 1)
+    scale_tier                 = optional(string)
+    scale_size                 = optional(string)
+    scale_family               = optional(string)
+    rai_policy_name            = optional(string)
+    version_upgrade_option     = optional(string, "OnceCurrentVersionExpired")
+    dynamic_throttling_enabled = optional(bool, false)
   }))
   default = {}
 
@@ -208,7 +208,7 @@ variable "id_length_limit" {
   default     = null
 
   validation {
-    condition = var.id_length_limit == null ? true : var.id_length_limit >= 6 || var.id_length_limit == 0
+    condition     = var.id_length_limit == null ? true : var.id_length_limit >= 6 || var.id_length_limit == 0
     error_message = "The id_length_limit must be >= 6 if supplied (not null), or 0 for unlimited length."
   }
 }

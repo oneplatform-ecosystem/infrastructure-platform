@@ -37,9 +37,9 @@ resource "azurerm_redis_cache" "this" {
   capacity = var.capacity
 
   # Redis Configuration
-  redis_version              = var.redis_version
-  enable_non_ssl_port        = var.enable_non_ssl_port
-  minimum_tls_version        = var.minimum_tls_version
+  redis_version                 = var.redis_version
+  enable_non_ssl_port           = var.enable_non_ssl_port
+  minimum_tls_version           = var.minimum_tls_version
   public_network_access_enabled = var.public_network_access_enabled
 
   # Redis Configuration Options
@@ -113,10 +113,10 @@ resource "azurerm_private_endpoint" "this" {
   subnet_id           = var.private_endpoint_subnet_id
 
   private_service_connection {
-    name                              = "${local.redis_cache_name}-psc"
-    private_connection_resource_id    = azurerm_redis_cache.this[0].id
-    is_manual_connection              = var.private_endpoint_manual_connection
-    subresource_names                 = ["redisCache"]
+    name                           = "${local.redis_cache_name}-psc"
+    private_connection_resource_id = azurerm_redis_cache.this[0].id
+    is_manual_connection           = var.private_endpoint_manual_connection
+    subresource_names              = ["redisCache"]
   }
 
   dynamic "private_dns_zone_group" {

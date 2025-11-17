@@ -22,8 +22,8 @@ module "label" {
   label_key_case      = var.label_key_case
   label_value_case    = var.label_value_case
 
-  additional_tag_map  = var.additional_tag_map
-  context             = var.context
+  additional_tag_map = var.additional_tag_map
+  context            = var.context
 }
 
 ####################
@@ -187,10 +187,10 @@ resource "azurerm_container_registry_webhook" "this" {
   registry_name       = azurerm_container_registry.this[0].name
   location            = var.location
 
-  service_uri = each.value.service_uri
-  status      = each.value.status
-  scope       = each.value.scope
-  actions     = each.value.actions
+  service_uri    = each.value.service_uri
+  status         = each.value.status
+  scope          = each.value.scope
+  actions        = each.value.actions
   custom_headers = each.value.custom_headers
 
   tags = module.label.tags

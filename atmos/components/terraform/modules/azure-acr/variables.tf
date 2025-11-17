@@ -261,8 +261,8 @@ variable "georeplications" {
 variable "network_rule_set" {
   description = "Network rule set configuration. Only available for Premium SKU"
   type = object({
-    default_action               = string
-    ip_rules                     = list(object({
+    default_action = string
+    ip_rules = list(object({
       action   = string
       ip_range = string
     }))
