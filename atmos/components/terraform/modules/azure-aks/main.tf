@@ -199,8 +199,9 @@ resource "azurerm_kubernetes_cluster" "this" {
   # Azure Policy
   azure_policy_enabled = var.azure_policy_enabled
 
-  # HTTP Application Routing (deprecated but still supported)
-  http_application_routing_enabled = var.http_application_routing_enabled
+  # Note: http_application_routing_enabled is deprecated in AzureRM v4.x
+  # HTTP Application Routing add-on is being retired and should not be used for new deployments
+  # Use Azure Application Gateway Ingress Controller (AGIC) or nginx ingress controller instead
 
   # Key Vault Secrets Provider
   dynamic "key_vault_secrets_provider" {

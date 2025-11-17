@@ -409,8 +409,11 @@ variable "azure_policy_enabled" {
   default     = false
 }
 
+# Note: http_application_routing_enabled is deprecated in AzureRM v4.x
+# The HTTP Application Routing add-on is being retired by Azure
+# Migrate to Azure Application Gateway Ingress Controller (AGIC) or nginx ingress controller
 variable "http_application_routing_enabled" {
-  description = "Should HTTP Application Routing be enabled?"
+  description = "DEPRECATED: HTTP Application Routing add-on is being retired. Use AGIC or nginx ingress instead. This variable is ignored in provider v4.x"
   type        = bool
   default     = false
 }
