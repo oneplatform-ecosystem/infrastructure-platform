@@ -245,13 +245,13 @@ variable "private_ip_address" {
 }
 
 variable "enable_accelerated_networking" {
-  description = "Should Accelerated Networking be enabled? Defaults to false"
+  description = "Should Accelerated Networking be enabled? Defaults to false. Note: In v4.x, this maps to accelerated_networking_enabled argument."
   type        = bool
   default     = false
 }
 
 variable "enable_ip_forwarding" {
-  description = "Should IP Forwarding be enabled? Defaults to false"
+  description = "Should IP Forwarding be enabled? Defaults to false. Note: In v4.x, this maps to ip_forwarding_enabled argument."
   type        = bool
   default     = false
 }

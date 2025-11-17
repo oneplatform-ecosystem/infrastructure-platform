@@ -59,8 +59,9 @@ resource "azurerm_network_interface" "this" {
     public_ip_address_id          = var.create_public_ip ? azurerm_public_ip.this[0].id : null
   }
 
-  enable_accelerated_networking = var.enable_accelerated_networking
-  enable_ip_forwarding          = var.enable_ip_forwarding
+  # Note: In v4.x, enable_* arguments renamed to *_enabled
+  accelerated_networking_enabled = var.enable_accelerated_networking
+  ip_forwarding_enabled          = var.enable_ip_forwarding
 
   tags = module.label.tags
 }
