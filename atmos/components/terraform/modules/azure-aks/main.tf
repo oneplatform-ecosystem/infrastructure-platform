@@ -197,10 +197,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   # Azure Policy
-  dynamic "azure_policy_enabled" {
-    for_each = var.azure_policy_enabled ? [1] : []
-    content {}
-  }
+  azure_policy_enabled = var.azure_policy_enabled
 
   # HTTP Application Routing (deprecated but still supported)
   http_application_routing_enabled = var.http_application_routing_enabled
@@ -267,9 +264,6 @@ resource "azurerm_kubernetes_cluster" "this" {
       }
     }
   }
-
-  # Monitoring
-  monitor_metrics {}
 
   # Automatic Channel Upgrade
   automatic_channel_upgrade = var.automatic_channel_upgrade
