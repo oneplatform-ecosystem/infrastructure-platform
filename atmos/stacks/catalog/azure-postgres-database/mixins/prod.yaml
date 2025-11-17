@@ -1,0 +1,14 @@
+components:
+  terraform:
+    azure-postgres-db:
+      vars:
+        stage: "prod"
+
+        # Production database configuration
+        collation: "en_US.utf8"
+        charset: "UTF8"
+
+        tags:
+          Environment: "Production"
+          CostCenter: "Operations"
+          Criticality: "High"
