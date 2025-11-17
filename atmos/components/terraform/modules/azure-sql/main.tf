@@ -22,13 +22,13 @@ module "label" {
 resource "azurerm_mssql_server" "this" {
   count = var.enabled ? 1 : 0
 
-  name                         = coalesce(var.sql_server_name, module.label.id)
-  resource_group_name          = var.resource_group_name
-  location                     = var.location
-  version                      = var.sql_server_version
-  administrator_login          = var.administrator_login
-  administrator_login_password = var.administrator_login_password
-  minimum_tls_version          = var.minimum_tls_version
+  name                          = coalesce(var.sql_server_name, module.label.id)
+  resource_group_name           = var.resource_group_name
+  location                      = var.location
+  version                       = var.sql_server_version
+  administrator_login           = var.administrator_login
+  administrator_login_password  = var.administrator_login_password
+  minimum_tls_version           = var.minimum_tls_version
   public_network_access_enabled = var.public_network_access_enabled
 
   dynamic "azuread_administrator" {

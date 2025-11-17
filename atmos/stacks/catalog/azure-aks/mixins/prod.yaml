@@ -1,0 +1,170 @@
+components:
+  terraform:
+    azure-aks:
+      vars:
+        # Production requires Standard or Premium tier for SLA
+        sku_tier: "Standard"
+
+        # Private cluster for enhanced security
+        private_cluster_enabled: true
+        private_cluster_public_fqdn_enabled: false
+
+        # API server access restrictions
+        api_server_access_profile:
+          authorized_ip_ranges: []  # Set in stack configuration
+          subnet_id: null
+          vnet_integration_enabled: false
+
+        # Production-grade system node pool
+        default_node_pool:
+          name: "system"
+          vm_size: "Standard_D4s_v3"  # Production-ready VMs
+          zones: ["1", "2", "3"]  # Multi-zone for high availability
+          enable_auto_scaling: true
+          min_count: 3
+          max_count: 10
+          node_count: 3
+          max_pods: 30
+          os_disk_size_gb: 128
+          os_disk_type: "Managed"
+          os_sku: "Ubuntu"
+          enable_host_encryption: true  # Enable encryption
+          enable_node_public_ip: false
+          only_critical_addons_enabled: true  # Only system pods on system pool
+          node_labels:
+            role: "system"
+          upgrade_settings:
+            max_surge: "33%"  # Controlled upgrades
+
+        # Example additional node pools for production workloads
+        # Uncomment and customize as needed
+        additional_node_pools: {}
+        #   apps:
+        #     vm_size: "Standard_D8s_v3"
+        #     vnet_subnet_id: null  # Set in stack configuration
+        #     zones: ["1", "2", "3"]
+        #     enable_auto_scaling: true
+        #     min_count: 3
+        #     max_count: 20
+        #     node_count: 3
+        #     mode: "User"
+        #     max_pods: 50
+        #     os_disk_size_gb: 256
+        #     os_disk_type: "Managed"
+        #     os_sku: "Ubuntu"
+        #     enable_host_encryption: true
+        #     enable_node_public_ip: false
+        #     node_labels:
+        #       workload: "applications"
+        #     upgrade_settings:
+        #       max_surge: "33%"
+        #     tags: {}
+
+        # Use system-assigned managed identity
+        identity_type: "SystemAssigned"
+
+        # Network configuration
+        network_profile:
+          network_plugin: "azure"
+          network_mode: null
+          network_policy: "azure"
+          dns_service_ip: "10.100.0.10"
+          service_cidr: "10.100.0.0/16"
+          pod_cidr: null
+          outbound_type: "loadBalancer"
+          load_balancer_sku: "standard"
+          load_balancer_profile:
+            managed_outbound_ip_count: 2
+            idle_timeout_in_minutes: 30
+            managed_outbound_ipv6_count: null
+            outbound_ip_address_ids: null
+            outbound_ip_prefix_ids: null
+            outbound_ports_allocated: null
+
+        # Azure AD RBAC integration for production
+        azure_ad_rbac:
+          managed: true
+          tenant_id: null  # Will use current tenant
+          admin_group_object_ids: []  # Set in stack configuration
+          azure_rbac_enabled: true
+
+        # Enforce Azure AD authentication only
+        role_based_access_control_enabled: true
+        local_account_disabled: true
+
+        # Production monitoring with Azure Monitor
+        oms_agent:
+          log_analytics_workspace_id: null  # Set in stack configuration
+          msi_auth_for_monitoring_enabled: true
+
+        # Enable Azure Policy for compliance
+        azure_policy_enabled: true
+
+        # Disable deprecated HTTP application routing
+        http_application_routing_enabled: false
+
+        # Enable Key Vault Secrets Provider
+        key_vault_secrets_provider:
+          secret_rotation_enabled: true
+          secret_rotation_interval: "2m"
+
+        # Enable Workload Identity (recommended for production)
+        workload_identity_enabled: true
+        oidc_issuer_enabled: true
+
+        # Automatic upgrades with controlled rollout
+        automatic_channel_upgrade: "stable"
+        node_os_channel_upgrade: "NodeImage"
+
+        # Maintenance window - updates during off-peak hours
+        maintenance_window:
+          allowed:
+            - day: "Saturday"
+              hours: [2, 3, 4, 5, 6]
+            - day: "Sunday"
+              hours: [2, 3, 4, 5, 6]
+          not_allowed: []  # Set in stack for holiday freezes
+
+        # Enable image cleaner for security
+        image_cleaner_enabled: true
+        image_cleaner_interval_hours: 24
+
+        # Disable run command for security (use bastion or private access)
+        run_command_enabled: false
+
+        # Auto scaler profile - conservative for production stability
+        auto_scaler_profile:
+          balance_similar_node_groups: true
+          expander: "least-waste"
+          max_graceful_termination_sec: 600
+          max_node_provisioning_time: "15m"
+          max_unready_nodes: 3
+          max_unready_percentage: 45
+          new_pod_scale_up_delay: "10s"
+          scale_down_delay_after_add: "10m"
+          scale_down_delay_after_delete: "10s"
+          scale_down_delay_after_failure: "3m"
+          scan_interval: "10s"
+          scale_down_unneeded: "10m"
+          scale_down_unready: "20m"
+          scale_down_utilization_threshold: "0.5"
+          empty_bulk_delete_max: 10
+          skip_nodes_with_local_storage: true
+          skip_nodes_with_system_pods: true
+
+        # Storage profile - enable CSI drivers
+        storage_profile:
+          blob_driver_enabled: true
+          disk_driver_enabled: true
+          disk_driver_version: "v1"
+          file_driver_enabled: true
+          snapshot_controller_enabled: true
+
+        # Production tags
+        tags:
+          Environment: "Production"
+          CostCenter: "Operations"
+          Criticality: "High"
+          DataClassification: "Internal"
+          Backup: "Required"
+          Compliance: "Required"

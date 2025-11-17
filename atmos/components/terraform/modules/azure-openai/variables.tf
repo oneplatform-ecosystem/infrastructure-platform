@@ -41,9 +41,9 @@ variable "public_network_access_enabled" {
 variable "network_acls" {
   description = "Network rules restricting access to the Azure OpenAI Service"
   type = object({
-    default_action                   = string
-    ip_rules                         = optional(set(string))
-    subnet_id                        = optional(string)
+    default_action                       = string
+    ip_rules                             = optional(set(string))
+    subnet_id                            = optional(string)
     ignore_missing_vnet_service_endpoint = optional(bool, false)
   })
   default = null
@@ -70,11 +70,11 @@ variable "identity_ids" {
 variable "model_deployments" {
   description = "Map of AI model deployments to create in the Azure OpenAI Service"
   type = map(object({
-    model_format   = string
-    model_name     = string
-    model_version  = string
-    scale_type     = string
-    scale_capacity = optional(number, 1)
+    model_format    = string
+    model_name      = string
+    model_version   = string
+    scale_type      = string
+    scale_capacity  = optional(number, 1)
     rai_policy_name = optional(string)
   }))
   default = {}
