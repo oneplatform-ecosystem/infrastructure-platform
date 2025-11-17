@@ -1,0 +1,11 @@
+components:
+  terraform:
+    azure-computer-vision:
+      vars:
+        # Development environment may use Free tier for testing
+        # Uncomment to use Free tier:
+        # sku_name: "F0"
+
+        # Development may allow public access for testing
+        # Uncomment to enable public access:
+        # public_network_access_enabled: true

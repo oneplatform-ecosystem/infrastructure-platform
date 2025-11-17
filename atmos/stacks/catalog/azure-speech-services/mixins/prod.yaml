@@ -1,0 +1,12 @@
+components:
+  terraform:
+    azure-speech-services:
+      vars:
+        # Production uses Standard tier
+        sku_name: "S0"
+
+        # Production enforces strict security
+        public_network_access_enabled: false
+
+        # Enable System Assigned Managed Identity for production
+        identity_type: "SystemAssigned"
