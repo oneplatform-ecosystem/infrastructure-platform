@@ -38,15 +38,17 @@ resource "azurerm_redis_cache" "this" {
 
   # Redis Configuration
   redis_version                 = var.redis_version
-  enable_non_ssl_port           = var.enable_non_ssl_port
+  non_ssl_port_enabled          = var.enable_non_ssl_port
   minimum_tls_version           = var.minimum_tls_version
   public_network_access_enabled = var.public_network_access_enabled
+
+  # Note: In v4.x, enable_authentication moved from redis_configuration to resource level as authentication_enabled
+  authentication_enabled = var.redis_configuration != null ? var.redis_configuration.enable_authentication : true
 
   # Redis Configuration Options
   dynamic "redis_configuration" {
     for_each = var.redis_configuration != null ? [var.redis_configuration] : []
     content {
-      enable_authentication           = redis_configuration.value.enable_authentication
       maxmemory_reserved              = redis_configuration.value.maxmemory_reserved
       maxmemory_delta                 = redis_configuration.value.maxmemory_delta
       maxmemory_policy                = redis_configuration.value.maxmemory_policy

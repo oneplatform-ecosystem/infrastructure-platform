@@ -62,7 +62,7 @@ variable "redis_version" {
 }
 
 variable "enable_non_ssl_port" {
-  description = "Enable the non-SSL port (6379) - disabled by default for security"
+  description = "Enable the non-SSL port (6379) - disabled by default for security. Note: In v4.x, this maps to non_ssl_port_enabled argument name."
   type        = bool
   default     = false
 }
@@ -85,9 +85,14 @@ variable "public_network_access_enabled" {
 
 # Redis Configuration
 variable "redis_configuration" {
-  description = "Redis configuration options"
+  description = <<-EOT
+    Redis configuration options.
+    Note: In AzureRM provider v4.x, enable_authentication has moved from redis_configuration
+    to the main resource level as authentication_enabled. This field is still accepted for
+    backward compatibility but will be applied at the resource level.
+  EOT
   type = object({
-    enable_authentication           = optional(bool)
+    enable_authentication           = optional(bool, true)
     maxmemory_reserved              = optional(number)
     maxmemory_delta                 = optional(number)
     maxmemory_policy                = optional(string)
