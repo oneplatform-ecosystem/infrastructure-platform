@@ -112,7 +112,6 @@ resource "azurerm_lb_nat_rule" "this" {
   idle_timeout_in_minutes        = each.value.idle_timeout_in_minutes
   enable_floating_ip             = each.value.enable_floating_ip
   enable_tcp_reset               = each.value.enable_tcp_reset
-  backend_address_pool_id        = each.value.backend_address_pool_key != null ? azurerm_lb_backend_address_pool.this[each.value.backend_address_pool_key].id : null
 }
 
 resource "azurerm_lb_nat_pool" "this" {

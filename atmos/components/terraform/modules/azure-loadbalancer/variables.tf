@@ -120,7 +120,6 @@ variable "nat_rules" {
     idle_timeout_in_minutes        = optional(number)
     enable_floating_ip             = optional(bool)
     enable_tcp_reset               = optional(bool)
-    backend_address_pool_key       = optional(string)
   }))
   default = {}
 }
