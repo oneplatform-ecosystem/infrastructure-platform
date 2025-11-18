@@ -1,0 +1,26 @@
+components:
+  terraform:
+    azure-frontdoor:
+      vars:
+        stage: "prod"
+
+        # Production uses Premium SKU for advanced features
+        sku_name: "Premium_AzureFrontDoor"
+
+        # Standard timeout for production
+        response_timeout_seconds: 120
+
+        # Production-specific origin groups with stricter health checks
+        origin_groups:
+          default:
+            name: "prod-origin-group"
+            session_affinity_enabled: true
+            load_balancing:
+              sample_size: 4
+              successful_samples_required: 3
+              additional_latency_in_milliseconds: 50
+            health_probe:
+              protocol: "Https"
+              interval_in_seconds: 60
+              request_type: "HEAD"
+              path: "/health"

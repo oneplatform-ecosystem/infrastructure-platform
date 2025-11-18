@@ -1,0 +1,60 @@
+components:
+  terraform:
+    azure-frontdoor:
+      metadata:
+        component: azure-frontdoor
+        type: abstract
+      vars:
+        enabled: true
+        delimiter: ""
+        regex_replace_chars: "/[^a-zA-Z0-9]/"
+        label_order:
+          - namespace
+          - name
+          - environment
+
+        # Default SKU configuration
+        sku_name: "Standard_AzureFrontDoor"
+
+        # Default response timeout
+        response_timeout_seconds: 120
+
+        # Default endpoints configuration
+        endpoints:
+          main:
+            name: "main-endpoint"
+            enabled: true
+            tags: {}
+
+        # Default origin groups configuration
+        origin_groups:
+          default:
+            name: "default-origin-group"
+            session_affinity_enabled: false
+            load_balancing:
+              sample_size: 4
+              successful_samples_required: 3
+              additional_latency_in_milliseconds: 50
+            health_probe:
+              protocol: "Https"
+              interval_in_seconds: 100
+              request_type: "HEAD"
+              path: "/health"
+
+        # Default origins configuration (to be overridden per environment)
+        origins: {}
+
+        # Default routes configuration (to be overridden per environment)
+        routes: {}
+
+        # Default rule sets (empty by default)
+        rule_sets: {}
+
+        # Default rules (empty by default)
+        rules: {}
+
+        # Default custom domains (empty by default)
+        custom_domains: {}
+
+        # Default security policies (empty by default)
+        security_policies: {}
