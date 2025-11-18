@@ -37,18 +37,65 @@ This repository provides a centralized platform for managing infrastructure depl
 
 ## 🧩 Available Components
 
+### Networking Components
 | Component | Description | Dependencies |
 |-----------|-------------|--------------|
-| `azure-rsg` | Azure Resource Groups | None |
 | `azure-vnet` | Azure Virtual Networks | Resource Groups |
 | `azure-subnet` | Azure Subnets | Resource Groups, VNets |
 | `azure-nsg` | Azure Network Security Groups | Resource Groups, Subnets |
+| `azure-asg` | Azure Application Security Groups | Resource Groups |
 | `azure-private-endpoint` | Azure Private Endpoints | Resource Groups, Subnets |
+| `azure-frontdoor` | Azure Front Door (CDN and WAF) | Resource Groups |
+| `azure-loadbalancer` | Azure Load Balancer | Resource Groups, VNet, Public IP |
+| `azure-app-gateway` | Azure Application Gateway | Resource Groups, VNet, Subnet, Public IP |
+
+### Foundation Components
+| Component | Description | Dependencies |
+|-----------|-------------|--------------|
+| `azure-rsg` | Azure Resource Groups | None |
+
+### Storage & Database Components
+| Component | Description | Dependencies |
+|-----------|-------------|--------------|
 | `azure-storage-account` | Azure Storage Accounts (V2, Data Lake Gen2) | Resource Groups |
 | `azure-keyvault` | Azure Key Vault (keys, secrets, certificates) | Resource Groups |
-| `azure-app-service-plan` | Azure App Service Plans for hosting applications | Resource Groups |
+| `azure-postgres` | Azure PostgreSQL Flexible Server | Resource Groups |
+| `azure-postgres-database` | Azure PostgreSQL Databases | Resource Groups, PostgreSQL Server |
+| `azure-sql` | Azure SQL Database | Resource Groups |
+| `azure-cosmosdb` | Azure Cosmos DB (multiple APIs) | Resource Groups |
+| `azure-redis` | Azure Cache for Redis | Resource Groups |
+
+### Compute Components
+| Component | Description | Dependencies |
+|-----------|-------------|--------------|
+| `azure-vm` | Azure Virtual Machines (Linux/Windows) | Resource Groups, VNet, Subnet |
+| `azure-app-service-plan` | Azure App Service Plans | Resource Groups |
 | `azure-function-app` | Azure Function Apps for serverless computing | Resource Groups, App Service Plans, Storage Accounts |
-| `azure-openai` | Azure OpenAI Service with model deployments | Resource Groups |
+| `azure-container-env` | Azure Container App Environment | Resource Groups |
+| `azure-container-app` | Azure Container Apps | Resource Groups, Container Environment |
+| `azure-aks` | Azure Kubernetes Service | Resource Groups, VNet, Subnet |
+
+### Container & Registry Components
+| Component | Description | Dependencies |
+|-----------|-------------|--------------|
+| `azure-acr` | Azure Container Registry | Resource Groups |
+
+### API & Integration Components
+| Component | Description | Dependencies |
+|-----------|-------------|--------------|
+| `azure-apim` | Azure API Management | Resource Groups |
+| `azure-datafactory` | Azure Data Factory | Resource Groups |
+
+### AI & Cognitive Services Components
+| Component | Description | Dependencies |
+|-----------|-------------|--------------|
+| `azure-openai` | Azure OpenAI Service | Resource Groups |
+| `azure-openai-deployment` | Azure OpenAI Model Deployments | Resource Groups, OpenAI Service |
+| `azure-computer-vision` | Azure Computer Vision (image analysis, OCR) | Resource Groups |
+| `azure-content-safety` | Azure Content Safety (content moderation) | Resource Groups |
+| `azure-document-intelligence` | Azure Document Intelligence (form recognition) | Resource Groups |
+| `azure-language-services` | Azure Language Services (NLP) | Resource Groups |
+| `azure-speech-services` | Azure Speech Services (speech-to-text, text-to-speech) | Resource Groups |
 
 ## 🏗️ Architecture
 
@@ -56,16 +103,51 @@ This repository provides a centralized platform for managing infrastructure depl
 ```
 atmos/
 ├── components/terraform/modules/     # Reusable Terraform modules
-│   ├── azure-rsg/                    # Resource group management  
+│   ├── azure-rsg/                    # Resource group management
+│   │
+│   ├── Networking/
 │   ├── azure-vnet/                   # Virtual network configuration
 │   ├── azure-subnet/                 # Subnet management with private endpoint support
 │   ├── azure-nsg/                    # Network security groups
+│   ├── azure-asg/                    # Application security groups
 │   ├── azure-private-endpoint/       # Private endpoint connectivity
+│   ├── azure-frontdoor/              # Azure Front Door (CDN and WAF)
+│   ├── azure-loadbalancer/           # Azure Load Balancer
+│   ├── azure-app-gateway/            # Azure Application Gateway
+│   │
+│   ├── Storage & Database/
 │   ├── azure-storage-account/        # Storage accounts (V2, ADLS Gen2)
 │   ├── azure-keyvault/               # Key Vault for secrets management
+│   ├── azure-postgres/               # PostgreSQL Flexible Server
+│   ├── azure-postgres-database/      # PostgreSQL databases
+│   ├── azure-sql/                    # Azure SQL Database
+│   ├── azure-cosmosdb/               # Cosmos DB (multiple APIs)
+│   ├── azure-redis/                  # Azure Cache for Redis
+│   │
+│   ├── Compute/
+│   ├── azure-vm/                     # Virtual Machines (Linux/Windows)
 │   ├── azure-app-service-plan/       # App Service Plans for hosting
 │   ├── azure-function-app/           # Function Apps for serverless computing
-│   └── azure-openai/                 # Azure OpenAI Service with AI model deployments
+│   ├── azure-container-env/          # Container App Environment
+│   ├── azure-container-app/          # Container Apps
+│   ├── azure-aks/                    # Azure Kubernetes Service
+│   │
+│   ├── Container & Registry/
+│   ├── azure-acr/                    # Azure Container Registry
+│   │
+│   ├── API & Integration/
+│   ├── azure-apim/                   # Azure API Management
+│   ├── azure-datafactory/            # Azure Data Factory
+│   │
+│   └── AI & Cognitive Services/
+│       ├── azure-openai/             # Azure OpenAI Service
+│       ├── azure-openai-deployment/  # OpenAI model deployments
+│       ├── azure-computer-vision/    # Computer Vision (image analysis, OCR)
+│       ├── azure-content-safety/     # Content Safety (moderation)
+│       ├── azure-document-intelligence/  # Document Intelligence
+│       ├── azure-language-services/  # Language Services (NLP)
+│       └── azure-speech-services/    # Speech Services
+│
 ├── stacks/catalog/                   # Component defaults and mixins
 ├── stacks/orgs/                      # Organization defaults
 └── stacks/azure/                     # Environment-specific configurations
@@ -223,21 +305,58 @@ The platform includes comprehensive Azure Key Vault integration with two deploym
 one-platform/
 ├── atmos/
 │   ├── atmos.yaml                    # Atmos configuration
-│   ├── components/terraform/modules/ # Terraform modules
-│   │   ├── azure-resource-group/
-│   │   ├── azure-vnet/
-│   │   ├── azure-subnet/
-│   │   ├── azure-nsg/
-│   │   ├── azure-private-endpoint/
-│   │   ├── azure-storage-account/
-│   │   ├── azure-keyvault/
-│   │   ├── azure-app-service-plan/
-│   │   ├── azure-function-app/
-│   │   └── azure-openai/
+│   ├── components/terraform/modules/ # Terraform modules (32 components)
+│   │   ├── Foundation/
+│   │   │   └── azure-rsg/            # Resource Groups
+│   │   │
+│   │   ├── Networking/
+│   │   │   ├── azure-vnet/           # Virtual Networks
+│   │   │   ├── azure-subnet/         # Subnets
+│   │   │   ├── azure-nsg/            # Network Security Groups
+│   │   │   ├── azure-asg/            # Application Security Groups
+│   │   │   ├── azure-private-endpoint/  # Private Endpoints
+│   │   │   ├── azure-frontdoor/      # Front Door
+│   │   │   ├── azure-loadbalancer/   # Load Balancer
+│   │   │   └── azure-app-gateway/    # Application Gateway
+│   │   │
+│   │   ├── Storage & Database/
+│   │   │   ├── azure-storage-account/  # Storage Accounts
+│   │   │   ├── azure-keyvault/       # Key Vault
+│   │   │   ├── azure-postgres/       # PostgreSQL Flexible Server
+│   │   │   ├── azure-postgres-database/  # PostgreSQL Databases
+│   │   │   ├── azure-sql/            # SQL Database
+│   │   │   ├── azure-cosmosdb/       # Cosmos DB
+│   │   │   └── azure-redis/          # Cache for Redis
+│   │   │
+│   │   ├── Compute/
+│   │   │   ├── azure-vm/             # Virtual Machines
+│   │   │   ├── azure-app-service-plan/  # App Service Plans
+│   │   │   ├── azure-function-app/   # Function Apps
+│   │   │   ├── azure-container-env/  # Container App Environment
+│   │   │   ├── azure-container-app/  # Container Apps
+│   │   │   └── azure-aks/            # Kubernetes Service
+│   │   │
+│   │   ├── Container & Registry/
+│   │   │   └── azure-acr/            # Container Registry
+│   │   │
+│   │   ├── API & Integration/
+│   │   │   ├── azure-apim/           # API Management
+│   │   │   └── azure-datafactory/    # Data Factory
+│   │   │
+│   │   └── AI & Cognitive Services/
+│   │       ├── azure-openai/         # OpenAI Service
+│   │       ├── azure-openai-deployment/  # OpenAI Deployments
+│   │       ├── azure-computer-vision/  # Computer Vision
+│   │       ├── azure-content-safety/ # Content Safety
+│   │       ├── azure-document-intelligence/  # Document Intelligence
+│   │       ├── azure-language-services/  # Language Services
+│   │       └── azure-speech-services/  # Speech Services
+│   │
 │   └── stacks/
 │       ├── catalog/                  # Component defaults and mixins
 │       ├── orgs/                     # Organization defaults
 │       └── azure/                    # Environment stacks
+│
 ├── scripts/                          # Validation and utility scripts
 ├── docs/                            # Additional documentation
 ├── CLAUDE.md                        # Claude Code AI assistant guidance
@@ -278,9 +397,9 @@ Terraform state is managed using Azure Storage:
 
 - **Latest Release**: [![Latest Release](https://img.shields.io/github/v/release/oneplatform-ecosystem/infrastructure-platform)](https://github.com/oneplatform-ecosystem/infrastructure-platform/releases)
 - **Build Status**: All components validated ✅
-- **Coverage**: 10 Azure components available
+- **Coverage**: 32 Azure components available
 - **Environments**: Development environment fully deployed
-- **Infrastructure**: Core networking, storage, security, and AI services operational
+- **Infrastructure**: Comprehensive Azure platform with networking, compute, storage, database, containers, API management, and AI services operational
 
 ## 📚 Additional Resources
 
